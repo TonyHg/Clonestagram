@@ -10,48 +10,64 @@ import styles from './Post.module.scss';
 export function Post() {
   return (
     <div className={ styles.post + " mt-3 mb-5 d-flex" }>
-      <div className={ styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
-        <div className={ styles.postUser }>
-          <img src={ testIcon }/>
-        </div>
-        <div className={ styles.postActions + " d-flex flex-column align-items-center"}>
-          <FontAwesomeIcon icon={faHeart} size="2x" className="mb-2"/>
-          <FontAwesomeIcon icon={faComment} size="2x" className="mb-2"/>
-          <FontAwesomeIcon icon={faPaperPlane} size="2x" className="mb-2"/>
-        </div>
-      </div>
+      <PostHeader />
+      <PostContent />
+      <PostComments />
+    </div>
+  )
+}
 
-      <div className={ styles.postContent }>
-        <div className={ styles.postMedia }>
-          <img src={ testImg } />
-        </div>
-        <div className={ styles.postDetails + " py-2 px-3"}>
-          <div className={ "d-flex justify-content-between align-items-center" }>
-            <div className={ "d-flex align-items-center mb-1" }>
-              <div className={ styles.postDetailsUser }>
-                <img src={ testIcon }/>
-              </div>
-              <div className={ styles.postDetailsUserName }>Instagram</div>
+function PostHeader() {
+  return (
+    <div className={ styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
+      <div className={ styles.postUser }>
+        <img src={ testIcon }/>
+      </div>
+      <div className={ styles.postActions + " d-flex flex-column align-items-center"}>
+        <FontAwesomeIcon icon={faHeart} size="2x" className="mb-2"/>
+        <FontAwesomeIcon icon={faComment} size="2x" className="mb-2"/>
+        <FontAwesomeIcon icon={faPaperPlane} size="2x" className="mb-2"/>
+      </div>
+    </div>
+  )
+}
+
+function PostContent() {
+  return (
+    <div className={ styles.postContent }>
+      <div className={ styles.postMedia }>
+        <img src={ testImg } />
+      </div>
+      <div className={ styles.postDetails + " py-2 px-3"}>
+        <div className={ "d-flex justify-content-between align-items-center" }>
+          <div className={ "d-flex align-items-center mb-1" }>
+            <div className={ styles.postDetailsUser }>
+              <img src={ testIcon }/>
             </div>
-            <div className={ styles.postTime }>
-              posted 5 mins ago
-            </div>
+            <div className={ styles.postDetailsUserName }>Instagram</div>
           </div>
-          <div className={ styles.postDescription }>
-            Hello my name is zuzy that suzy with a Z. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis... 
+          <div className={ styles.postTime }>
+            posted 5 mins ago
           </div>
         </div>
-      </div>
-
-      <div className={ styles.postComments }>
-        <PostComment />
-        <PostComment />
-        <div className={ styles.postInput + " d-flex align-items-center justify-content-between"}>
-          <input type="text" className={ styles.postInputText }/>
-          <FontAwesomeIcon icon={faPaperPlane}/>
+        <div className={ styles.postDescription }>
+          Hello my name is zuzy that suzy with a Z. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis... 
         </div>
-
       </div>
+    </div>
+  )
+}
+
+function PostComments() {
+  return (
+    <div className={ styles.postComments }>
+      <PostComment />
+      <PostComment />
+      <div className={ styles.postInput + " d-flex align-items-center justify-content-between"}>
+        <input type="text" className={ styles.postInputText }/>
+        <FontAwesomeIcon icon={faPaperPlane}/>
+      </div>
+
     </div>
   )
 }

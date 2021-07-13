@@ -4,7 +4,9 @@
 }
 
 .postContent {
+  min-width: 450px;
   width: 450px;
+  max-width: 450px;
   border-radius: 20px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
   overflow-y: hidden;
@@ -29,10 +31,7 @@
     }
   }
 
-  .postUser {
-    width: 64px;
-    height: 64px;
-  }
+
 
   .postTime {
     text-transform: uppercase;
@@ -49,12 +48,17 @@
   }
 }
 
+.postUser {
+  width: 64px;
+  height: 64px;
+}
+
 .postUser, .postDetailsUser, .postCommentHeaderUserImg {
   border-radius: 100%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   img {
     width: 100%;
-    width: 100%;
+    border-radius: 100%;
     object-fit: cover;
   }
 }

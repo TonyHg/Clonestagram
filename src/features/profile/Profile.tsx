@@ -11,7 +11,7 @@ import styles from './Profile.module.scss';
 
 export function Profile() {
   return (
-    <div className={styles.profile}>
+    <div className={styles.profile + " d-flex"}>
       <UserInfo />
       <Portfolio />
     </div>
@@ -20,7 +20,7 @@ export function Profile() {
 
 function UserInfo() {
   return (
-    <div className={styles.userInfo + " d-flex flex-column justify-content-center align-items-center"}>
+    <div className={styles.userInfo + " col-4 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
         <img src={testIcon} />
       </div>
@@ -66,8 +66,27 @@ function UserActions() {
 
 function Portfolio() {
   return (
-    <div className={styles.portfolio}>
+    <div className={styles.portfolio + " col-8 d-flex flex-wrap justify-content-between"}>
+      <PortfolioItem />
+      <PortfolioItem />
+      <PortfolioItem />
+      <PortfolioItem />
+      <PortfolioItem />
+      <PortfolioItem />
+      <PortfolioItem />
+    </div>
+  )
+}
 
+function PortfolioItem() {
+  return (
+    <div className={styles.portfolioItem + " mb-5"}>
+      <div className={styles.portfolioItemMedia}>
+        <img src={testImg} />
+      </div>
+      <div className={styles.portfolioItemDescription + " py-1 px-3"}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
+      </div>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { faSlidersH } from '@fortawesome/free-solid-svg-icons';
+import { faSlidersH, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import testIcon from '../../assets/img/image 2.png';
 
 import styles from './Navbar.module.scss';
@@ -11,6 +11,7 @@ import { Search } from '../search/Search';
 
 import { switchView, views } from '../../appSlice';
 import { useDispatch } from 'react-redux';
+import { disconnect } from '../auth/authSlice';
 
 export function Navbar() {
   const dispatch = useDispatch()
@@ -30,6 +31,10 @@ export function Navbar() {
 
         <div onClick={() => dispatch(switchView(views.SETTINGS))}>
           <FontAwesomeIcon icon={faSlidersH} />
+        </div>
+
+        <div onClick={() => dispatch(disconnect())}>
+          <FontAwesomeIcon icon={faSignOutAlt} />
         </div>
       </div>
     </div>

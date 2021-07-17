@@ -5,7 +5,9 @@ import { Navbar } from './features/navbar/Navbar';
 import { Feed } from './features/feed/Feed';
 import { useSelector, useDispatch } from 'react-redux';
 import { views } from './appSlice';
+import { auths } from './features/auth/authSlice';
 import { Profile } from './features/profile/Profile';
+import { Auth } from './features/auth/Auth';
 
 const renderView = (view: String) => {
   switch (view) {
@@ -17,12 +19,11 @@ const renderView = (view: String) => {
 
 function App() {
   const view = useSelector((state: RootState) => state.app.value)
-  const dispatch = useDispatch()
+  const auth = useSelector((state: RootState) => state.auth.value)
 
   return (
     <div className="App">
-      <Navbar />
-      {renderView(view)}
+      {(auth === auths.DISCONNECTED && <Auth />) || <div><Navbar /> {renderView(view)}</div>}
     </div>
   )
 }

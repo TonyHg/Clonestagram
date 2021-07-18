@@ -1,0 +1,67 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+.messenger {
+  padding: 64px 15%;
+
+  .messengerHub {
+    height: 500px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+  
+    .messengerHubPreviews {
+      .messengerPreview {
+        border-radius: 20px;
+        padding: 10px;
+
+        .messengerPreviewIcon {
+          width: 54px;
+          height: 54px;
+          margin-right: 20px;
+          border-radius: 100%;
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .messengerPreviewHeader {
+          .messengerPreviewUserName {
+
+          }
+          
+          .messengerPreviewText {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+          }
+        }
+
+        &.selected {
+          background-image: linear-gradient(to right, #25aae1, #4481eb);
+          box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+          color: white;
+        }
+      }
+
+    }
+
+    .messengerHubFooter {
+      padding: 15px;
+
+      .messengerHubNewConversation {
+        width:300px;
+        background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+        box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+        color: white;
+      }
+    }
+  }
+
+  .messengerChat {
+
+  }
+}

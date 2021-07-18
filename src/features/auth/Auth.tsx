@@ -1,4 +1,5 @@
 import styles from './Auth.module.scss';
+import btnStyles from '../styles/Button.module.scss';
 import { connect } from '../auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -42,7 +43,7 @@ function Login() {
         </span>
       </div>
 
-      <div className={styles.submitButton + " d-flex " + styles.btnHover} onClick={() => dispatch(connect())}>
+      <div className={btnStyles.submitButton + " d-flex " + btnStyles.btnHover} onClick={() => dispatch(connect())}>
         <span className="m-auto">Login</span>
       </div>
     </form>
@@ -75,7 +76,7 @@ function Register() {
         </span>
       </div>
 
-      <div className={styles.submitButton + " d-flex " + styles.btnHover} onClick={() => dispatch(connect())}>
+      <div className={btnStyles.submitButton + " d-flex " + btnStyles.btnHover} onClick={() => dispatch(connect())}>
         <span className="m-auto">Register</span>
       </div>
     </form>

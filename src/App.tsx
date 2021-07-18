@@ -8,11 +8,13 @@ import { views } from './appSlice';
 import { auths } from './features/auth/authSlice';
 import { Profile } from './features/profile/Profile';
 import { Auth } from './features/auth/Auth';
+import { Messenger } from './features/messenger/Messenger';
 
 const renderView = (view: String) => {
   switch (view) {
     case views.FEED: return <Feed />
     case views.PROFILE: return <Profile />
+    case views.MESSENGER: return <Messenger />
     default: return <Feed />
   }
 }
@@ -23,7 +25,7 @@ function App() {
 
   return (
     <div className="App">
-      {(auth === auths.DISCONNECTED && <Auth />) || <div><Navbar /> {renderView(view)}</div>}
+      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view)}</div>}
     </div>
   )
 }

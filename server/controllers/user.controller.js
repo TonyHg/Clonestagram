@@ -9,8 +9,9 @@ exports.createUser = (req, res, next) => {
   let user = new User({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
   });
+
+  user.setPassword(req.body.password);
 
   user.save((err) => {
     if (err) {

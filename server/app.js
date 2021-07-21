@@ -18,6 +18,9 @@ const app = express();
 // app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Models
+// const Users = mongoose.model("users");
 app.use("/user", user);
 
 let port = 2048;

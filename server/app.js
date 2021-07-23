@@ -1,5 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const multer = require("multer");
+const { GridFsStorage } = require("multer-gridfs-storage");
+const fs = require("fs");
+const path = require("path");
+const Loki = require("lokijs");
 
 // Setup database connection
 const mongoose = require("mongoose");
@@ -11,8 +17,30 @@ mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+const storage = new GridFsStorage({
+  url: mongoDB,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = file.originalname;
+        const fileInfo = {
+          filename: filename,
+          bucketName: "uploads",
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+
+const upload = multer({ storage });
+
 const user = require("./routes/user.route");
 const app = express();
+app.use(cors());
 
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
@@ -21,7 +49,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Models
 // const Users = mongoose.model("users");
-app.use("/user", user);
+app.use("/api/user", user);
 
 let port = 2048;
 

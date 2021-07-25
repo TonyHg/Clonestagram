@@ -27,27 +27,51 @@ export function Auth() {
 
 function Login() {
   const dispatch = useDispatch()
+
+  const [user, setUser] = useState({
+    email: '',
+    name: '',
+    password: '',
+  });
+
+  const onChange = (e: React.FormEvent<EventTarget>) => {
+    let target = e.target as HTMLInputElement;
+    setUser({ ...user, [target.name]: target.value });
+  };
+
+  const onLogin = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault()
+    UserRequest.loginUser(user)
+      .then((data) => {
+        console.log(data)
+        dispatch(connect())
+      })
+      .then((err) => {
+        console.error(err)
+      });
+  }
+
   return (
-    <form className={styles.authLogin + " column col-5 col-xs-12"}>
+    <form onSubmit={onLogin} className={styles.authLogin + " column col-5 col-xs-12"}>
       <div className={styles.formTitle}>
         Login
       </div>
       <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="text" name="email" placeholder="Email" />
+        <input className={styles.inputText} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
         <span className={styles.inputIcon}>
           <FontAwesomeIcon icon={faEnvelope} />
         </span>
       </div>
       <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="password" name="password" placeholder="Password" />
+        <input className={styles.inputText} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
         <span className={styles.inputIcon}>
           <FontAwesomeIcon icon={faLock} />
         </span>
       </div>
 
-      <div className={btnStyles.submitButton + " d-flex " + btnStyles.btnHover} onClick={() => dispatch(connect())}>
+      <button className={btnStyles.submitButton + " d-flex " + btnStyles.btnHover} type="submit">
         <span className="m-auto">Login</span>
-      </div>
+      </button>
     </form>
   )
 }

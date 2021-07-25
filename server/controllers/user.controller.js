@@ -1,10 +1,15 @@
 const User = require("../models/user.model");
+const UserRepository = require("../repositories/user.repository");
 
 exports.users = (req, res) => {
   res.send("Send all users");
 };
 
-exports.createUser = (req, res, next) => {
+exports.user = (req, res) => {
+  return UserRepository.getUserByEmail(req.params.email);
+};
+
+exports.create = (req, res, next) => {
   console.log(req.body);
   let user = new User({
     name: req.body.name,
@@ -20,4 +25,23 @@ exports.createUser = (req, res, next) => {
 
     res.send("User created sucessfully");
   });
+};
+
+exports.login = (req, res, next) => {
+  UserRepository.getUserByEmail(req.body.email)
+    .then((data) => {
+      if (data !== null) {
+        const user = new User({
+          name: data.name,
+          email: data.email,
+          salt: data.salt,
+          hash: data.hash,
+        });
+        if (user.validatePassword(req.body.password)) {
+          res.send(user.generateJWT());
+        }
+        res.send("wrong email/password");
+      }
+    })
+    .then((err) => res.send("wrong email/password"));
 };

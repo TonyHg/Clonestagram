@@ -1,5 +1,3 @@
-import react from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faPaperPlane, faComment } from '@fortawesome/free-regular-svg-icons';
 import testImg from '../../assets/img/image 1.png';

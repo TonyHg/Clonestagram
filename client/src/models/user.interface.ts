@@ -3,3 +3,7 @@ export interface User {
   email: String;
   password: String;
 }
+
+export interface UserProfileInfo {
+  name: String,
+}

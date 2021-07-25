@@ -2,30 +2,46 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faImage, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import react from 'react';
+import { useEffect, useState } from 'react';
+import { UserRequest } from '../../api/user.api';
 
 import testImg from '../../assets/img/image 1.png';
 import testIcon from '../../assets/img/image 2.png';
+import { User, UserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 
-export function Profile() {
+interface ProfileProps {
+  userEmail: String
+}
+
+export function Profile({ userEmail }: ProfileProps) {
+  const initialState: UserProfileInfo = { name: "" }
+  const [user, setUser] = useState(initialState)
+  useEffect(() => {
+    UserRequest.getUser(userEmail).then((data) => {
+      const userProfileInfo: UserProfileInfo = { name: data.name || "no name" }
+      setUser(userProfileInfo)
+    })
+
+  }, [userEmail])
+
   return (
     <div className={styles.profile + " d-flex"}>
-      <UserInfo />
+      <UserInfo name={user.name} />
       <Portfolio />
     </div>
   )
 }
 
-function UserInfo() {
+function UserInfo({ name }: UserProfileInfo) {
   return (
     <div className={styles.userInfo + " col-4 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
         <img src={testIcon} />
       </div>
       <div className={styles.userInfoName + " my-3"}>
-        Thdesign
+        {name}
       </div>
       <UserInfoStat icon={faUser} val={42} name="Followers" />
       <UserInfoStat icon={faUsers} val={512} name="Following" />

@@ -6,7 +6,9 @@ exports.users = (req, res) => {
 };
 
 exports.user = (req, res) => {
-  return UserRepository.getUserByEmail(req.params.email);
+  UserRepository.getUserByEmail(req.params.email)
+    .then((data) => res.send(data))
+    .then((err) => console.log(err));
 };
 
 exports.create = (req, res, next) => {
@@ -38,7 +40,7 @@ exports.login = (req, res, next) => {
           hash: data.hash,
         });
         if (user.validatePassword(req.body.password)) {
-          res.send(user.generateJWT());
+          res.send(user.toAuthJSON());
         }
         res.send("wrong email/password");
       }

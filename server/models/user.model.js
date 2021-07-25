@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
+const SECRET_KEY = process.env.SECRET_KEY || "secret";
+
 let UserSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -36,7 +38,7 @@ UserSchema.methods.generateJWT = function () {
       id: this._id,
       exp: parseInt(expirationDate.getTime() / 1000, 10),
     },
-    "secret"
+    SECRET_KEY
   );
 };
 

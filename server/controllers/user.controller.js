@@ -8,11 +8,10 @@ exports.users = (req, res) => {
 exports.user = (req, res) => {
   UserRepository.getUserByEmail(req.params.email)
     .then((data) => res.send(data))
-    .then((err) => console.log(err));
+    .then((err) => console.log(`User ${req.params.email} not found`));
 };
 
 exports.create = (req, res, next) => {
-  console.log(req.body);
   let user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -42,8 +41,8 @@ exports.login = (req, res, next) => {
         if (user.validatePassword(req.body.password)) {
           res.send(user.toAuthJSON());
         }
-        res.send("wrong email/password");
+        res.status(501).send("wrong email/password");
       }
     })
-    .then((err) => res.send("wrong email/password"));
+    .then((err) => res.status(501).send("wrong email/password"));
 };

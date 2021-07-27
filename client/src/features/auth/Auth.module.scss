@@ -51,6 +51,10 @@
     border-radius: 25px;
     padding: 0 30px 0 50px;
     border: none;
+
+    &.error {
+      outline: red solid 2px;
+    }
   }
 
   .inputIcon {

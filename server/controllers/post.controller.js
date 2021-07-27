@@ -3,9 +3,10 @@ const Post = require("../models/post.model");
 exports.create = (req, res, next) => {
   let post = new Post({
     userId: req.body.userId,
-    media: req.body.media,
+    file: req.file,
+    filename: req.body.filename,
     description: req.body.description,
-    creationDate: req.body.creationDate,
+    uploadDate: req.body.uploadDate,
   });
 
   post.save((err) => {

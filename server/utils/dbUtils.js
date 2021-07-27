@@ -28,7 +28,19 @@ const storage = new GridFsStorage({
   },
 });
 
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png"
+  ) {
+    cb(null, true);
+  } else {
+    cb(new Error("Image uploaded is not of type jpg/jpeg or png"), false);
+  }
+};
+
+let upload = multer({ storage: storage, fileFilter: fileFilter });
 
 console.log("dbUtils");
 
@@ -36,5 +48,8 @@ module.exports = {
   connectToDatabase: () => {},
   getDb: () => {
     return db;
+  },
+  getUpload: () => {
+    return upload;
   },
 };

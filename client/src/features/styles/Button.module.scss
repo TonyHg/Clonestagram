@@ -36,3 +36,7 @@
 .btnHover:focus {
   outline: none;
 }
+
+.btnHover:disabled {
+  filter: grayscale(0.5);
+}

@@ -44,7 +44,7 @@ function Login() {
     UserRequest.loginUser(user)
       .then((data) => {
         console.log(data)
-        dispatch(connect())
+        dispatch(connect(data))
       })
       .then((err) => {
         console.error(err)
@@ -96,7 +96,7 @@ function Register() {
     UserRequest.createUser(user)
       .then((data) => {
         console.log(data)
-        dispatch(connect())
+        dispatch(connect(data))
       })
       .then((err) => {
         console.error(err)

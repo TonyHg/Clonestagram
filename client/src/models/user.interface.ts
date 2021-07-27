@@ -7,3 +7,9 @@ export interface User {
 export interface UserProfileInfo {
   name: String,
 }
+
+export interface UserToken {
+  _id: String,
+  email: String,
+  token: String,
+}

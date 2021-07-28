@@ -1,6 +1,6 @@
 export interface Post {
-  userId: String,
-  filename: String,
-  description: String,
-  uploadDate: String,
+  userId: string,
+  file: File | null,
+  description: string,
+  uploadDate: string,
 }

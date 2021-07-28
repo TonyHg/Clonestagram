@@ -10,6 +10,7 @@ const dbUtils = require("./utils/dbUtils");
 dbUtils.connectToDatabase();
 
 const user = require("./routes/user.route");
+const post = require("./routes/post.route");
 const app = express();
 app.use(cors());
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Models
 // const Users = mongoose.model("users");
 app.use("/api/user", user);
+app.use("/api/post", post);
 
 let port = 2048;
 

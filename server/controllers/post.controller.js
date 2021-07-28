@@ -1,11 +1,13 @@
 const Post = require("../models/post.model");
 
 exports.create = (req, res, next) => {
+  console.log(req.file);
+  console.log(req.body);
   let post = new Post({
     userId: req.body.userId,
-    media: req.body.media,
+    file: req.file,
     description: req.body.description,
-    creationDate: req.body.creationDate,
+    uploadDate: req.body.uploadDate,
   });
 
   post.save((err) => {

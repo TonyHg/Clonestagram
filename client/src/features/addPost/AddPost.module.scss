@@ -1,0 +1,45 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+.drawer{
+  border-radius: 32px 32px 0 0;
+}
+.addPostDrawer {
+  padding: 32px 20%;
+
+  .addPostDrawerTitle {
+    text-transform: uppercase;
+    font-weight: bold;
+    color:#4481eb;
+    padding-bottom: 12px;
+    font-size: 20px;
+  }
+
+  .addPostDrawerDrop {
+    padding: auto;
+  }
+
+  .addPostDrawerDescription {
+    
+    .addPostDrawerDescriptionArea {
+      min-height: 300px;
+    }
+  }
+}
+
+.addPostBtn {
+  position: fixed;
+  bottom: 64px;
+  right: 64px;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe);
+  box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+  display: flex;
+  .addPostBtnIcon {
+    margin: auto;
+    color: white;
+
+  }
+}
+

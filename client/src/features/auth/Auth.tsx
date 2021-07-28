@@ -34,20 +34,24 @@ function Login() {
     password: '',
   });
 
+  const [error, setError] = useState(false)
+
   const onChange = (e: React.FormEvent<EventTarget>) => {
     let target = e.target as HTMLInputElement;
     setUser({ ...user, [target.name]: target.value });
+    if (error) setError(false)
   };
 
   const onLogin = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault()
+    setError(false)
     UserRequest.loginUser(user)
       .then((data) => {
-        console.log(data)
-        dispatch(connect())
+        console.log(`data: ${data}`)
+        dispatch(connect(data))
       })
-      .then((err) => {
-        console.error(err)
+      .catch((err) => {
+        setError(true)
       });
   }
 
@@ -57,13 +61,13 @@ function Login() {
         Login
       </div>
       <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
+        <input className={styles.inputText + ` ${error ? styles.error : ""}`} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
         <span className={styles.inputIcon}>
           <FontAwesomeIcon icon={faEnvelope} />
         </span>
       </div>
       <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
+        <input className={styles.inputText + ` ${error ? styles.error : ""}`} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
         <span className={styles.inputIcon}>
           <FontAwesomeIcon icon={faLock} />
         </span>
@@ -85,21 +89,25 @@ function Register() {
     password: '',
   });
 
+  const [error, setError] = useState(false)
+
   const onChange = (e: React.FormEvent<EventTarget>) => {
     let target = e.target as HTMLInputElement;
     setUser({ ...user, [target.name]: target.value });
+    if (error) setError(false)
   };
 
   const onRegister = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(user)
+    setError(false)
     UserRequest.createUser(user)
       .then((data) => {
-        console.log(data)
-        dispatch(connect())
+        console.log(`data: ${data}`)
+        dispatch(connect(data))
       })
-      .then((err) => {
-        console.error(err)
+      .catch((err) => {
+        setError(true)
       });
   }
 
@@ -115,7 +123,7 @@ function Register() {
         </span>
       </div>
       <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
+        <input className={styles.inputText + ` ${error ? styles.error : ""}`} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
         <span className={styles.inputIcon}>
           <FontAwesomeIcon icon={faEnvelope} />
         </span>

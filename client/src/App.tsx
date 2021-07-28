@@ -11,10 +11,10 @@ import { Auth } from './features/auth/Auth';
 import { Messenger } from './features/messenger/Messenger';
 import { AddPost } from './features/addPost/AddPost';
 
-const renderView = (view: String, userEmail: String) => {
+const renderView = (view: String) => {
   switch (view) {
     case views.FEED: return <Feed />
-    case views.PROFILE: return <Profile userEmail={userEmail} />
+    case views.PROFILE: return <Profile />
     case views.MESSENGER: return <Messenger />
     default: return <Feed />
   }
@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div className="App">
-      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view, "tony@email.com")} <AddPost /></div>}
+      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view)} <AddPost /></div>}
     </div>
   )
 }

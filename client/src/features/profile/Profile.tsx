@@ -3,7 +3,9 @@ import { faImage, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { UserRequest } from '../../api/user.api';
+import { RootState } from '../../app/store';
 
 import testImg from '../../assets/img/image 1.png';
 import testIcon from '../../assets/img/image 2.png';
@@ -11,13 +13,10 @@ import { User, UserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 
-interface ProfileProps {
-  userEmail: String
-}
-
-export function Profile({ userEmail }: ProfileProps) {
+export function Profile() {
   const initialState: UserProfileInfo = { name: "" }
   const [user, setUser] = useState(initialState)
+  const userEmail = useSelector((state: RootState) => state.auth.token!!.email)
   useEffect(() => {
     UserRequest.getUser(userEmail).then((data) => {
       const userProfileInfo: UserProfileInfo = { name: data.name || "no name" }

@@ -9,6 +9,7 @@ import { auths } from './features/auth/authSlice';
 import { Profile } from './features/profile/Profile';
 import { Auth } from './features/auth/Auth';
 import { Messenger } from './features/messenger/Messenger';
+import { AddPost } from './features/addPost/AddPost';
 
 const renderView = (view: String, userEmail: String) => {
   switch (view) {
@@ -25,7 +26,7 @@ function App() {
 
   return (
     <div className="App">
-      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view, "tony@email.com")}</div>}
+      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view, "tony@email.com")} <AddPost /></div>}
     </div>
   )
 }

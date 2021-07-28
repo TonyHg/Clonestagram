@@ -7,7 +7,7 @@ export const auths = {
 }
 
 export interface AuthState {
-  value: String;
+  value: string;
   token: UserToken | null;
 }
 

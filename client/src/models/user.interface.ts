@@ -1,15 +1,15 @@
 export interface User {
-  name: String;
-  email: String;
-  password: String;
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface UserProfileInfo {
-  name: String,
+  name: string,
 }
 
 export interface UserToken {
-  _id: String,
-  email: String,
-  token: String,
+  _id: string,
+  email: string,
+  token: string,
 }

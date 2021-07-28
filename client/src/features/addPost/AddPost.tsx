@@ -4,9 +4,10 @@ import styles from './AddPost.module.scss';
 import btnStyles from '../styles/Button.module.scss';
 import { Drawer } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostRequest } from '../../api/post.api';
 import { Post } from '../../models/post.interface';
+import { RootState } from '../../app/store';
 
 export function AddPost() {
   const [drawer, setDrawer] = useState(false)
@@ -23,9 +24,9 @@ export function AddPost() {
 }
 
 function AddPostDrawer(props: { onClose: () => void }) {
-  const dispatch = useDispatch()
+  const userId = useSelector((state: RootState) => state.auth.token?._id)
   const initialState: Post = {
-    userId: '',
+    userId: userId || "noUser",
     file: null,
     description: '',
     uploadDate: '',
@@ -35,7 +36,6 @@ function AddPostDrawer(props: { onClose: () => void }) {
 
   const onAddPost = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault()
-    post.userId = "TODO"
     post.uploadDate = new Date().toISOString()
     console.log(post)
     PostRequest.createPost(post)

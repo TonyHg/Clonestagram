@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 let PostSchema = new Schema({
   userId: { type: String, required: true },
   file: { type: Object, required: true },
+  filename: { type: String, required: true },
   description: { type: String, required: true },
   uploadDate: { type: String, required: true },
 });

@@ -1,4 +1,5 @@
 const Post = require("../models/post.model");
+const PostRepository = require("../repositories/post.repository");
 
 exports.create = (req, res, next) => {
   console.log(req.file);
@@ -6,6 +7,7 @@ exports.create = (req, res, next) => {
   let post = new Post({
     userId: req.body.userId,
     file: req.file,
+    filename: req.body.filename,
     description: req.body.description,
     uploadDate: req.body.uploadDate,
   });
@@ -17,4 +19,13 @@ exports.create = (req, res, next) => {
 
     res.send("Post created sucessfully");
   });
+};
+
+exports.getAll = async (req, res, next) => {
+  try {
+    const posts = await PostRepository.getAllPost();
+    res.send({ posts: posts });
+  } catch {
+    res.status(400).send("Error while fetching posts");
+  }
 };

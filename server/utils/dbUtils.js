@@ -1,6 +1,7 @@
 const multer = require("multer");
 const crypto = require("crypto");
 const { GridFsStorage } = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
 const mongoose = require("mongoose");
 const uri =
   "mongodb+srv://admin:Gh6nM6QhAvAxQYP@cluster0.uz537.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -9,6 +10,11 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+let gfs;
+db.once("open", () => {
+  gfs = Grid(db.db, mongoose.mongo);
+  gfs.collection("uploads");
+});
 
 const storage = new GridFsStorage({
   url: mongoDB,
@@ -52,5 +58,11 @@ module.exports = {
   },
   getUpload: () => {
     return upload;
+  },
+  getStorage: () => {
+    return storage;
+  },
+  getGfs: () => {
+    return gfs;
   },
 };

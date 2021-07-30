@@ -6,7 +6,7 @@ import { Drawer } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostRequest } from '../../api/post.api';
-import { Post } from '../../models/post.interface';
+import { IPost } from '../../models/post.interface';
 import { RootState } from '../../app/store';
 
 export function AddPost() {
@@ -25,9 +25,10 @@ export function AddPost() {
 
 function AddPostDrawer(props: { onClose: () => void }) {
   const userId = useSelector((state: RootState) => state.auth.token?._id)
-  const initialState: Post = {
+  const initialState: IPost = {
     userId: userId || "noUser",
     file: null,
+    filename: '',
     description: '',
     uploadDate: '',
   }
@@ -37,6 +38,7 @@ function AddPostDrawer(props: { onClose: () => void }) {
   const onAddPost = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault()
     post.uploadDate = new Date().toISOString()
+    post.filename = post.file?.name || ""
     console.log(post)
     PostRequest.createPost(post)
       .then((data) => {

@@ -9,17 +9,17 @@ import { RootState } from '../../app/store';
 
 import testImg from '../../assets/img/image 1.png';
 import testIcon from '../../assets/img/image 2.png';
-import { User, UserProfileInfo } from '../../models/user.interface';
+import { IUser, IUserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 
 export function Profile() {
-  const initialState: UserProfileInfo = { name: "" }
+  const initialState: IUserProfileInfo = { name: "" }
   const [user, setUser] = useState(initialState)
   const userEmail = useSelector((state: RootState) => state.auth.token!!.email)
   useEffect(() => {
     UserRequest.getUser(userEmail).then((data) => {
-      const userProfileInfo: UserProfileInfo = { name: data.name || "no name" }
+      const userProfileInfo: IUserProfileInfo = { name: data.name || "no name" }
       setUser(userProfileInfo)
     })
 
@@ -33,7 +33,7 @@ export function Profile() {
   )
 }
 
-function UserInfo({ name }: UserProfileInfo) {
+function UserInfo({ name }: IUserProfileInfo) {
   return (
     <div className={styles.userInfo + " col-4 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>

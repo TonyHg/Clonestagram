@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserToken } from '../../models/user.interface';
+import { IUserToken } from '../../models/user.interface';
 
 export const auths = {
   CONNECTED: "connected",
@@ -8,7 +8,7 @@ export const auths = {
 
 export interface AuthState {
   value: string;
-  token: UserToken | null;
+  token: IUserToken | null;
 }
 
 const initialState: AuthState = {
@@ -20,7 +20,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    connect(state, action: PayloadAction<UserToken>) {
+    connect(state, action: PayloadAction<IUserToken>) {
       if (action.payload) {
         state.token = action.payload
         state.value = auths.CONNECTED

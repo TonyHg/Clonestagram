@@ -4,12 +4,15 @@ import testImg from '../../assets/img/image 1.png';
 import testIcon from '../../assets/img/image 2.png';
 
 import styles from './Post.module.scss';
+import { IPost } from '../../models/post.interface';
+import { useEffect, useState } from 'react';
+import { FileRequest } from '../../api/file.api';
 
-export function Post() {
+export function Post(props: { post: IPost }) {
   return (
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
       <PostHeader />
-      <PostContent />
+      <PostContent post={props.post} />
       <PostComments />
     </div>
   )
@@ -30,11 +33,11 @@ function PostHeader() {
   )
 }
 
-function PostContent() {
+function PostContent(props: { post: IPost }) {
   return (
     <div className={styles.postContent}>
       <div className={styles.postMedia}>
-        <img src={testImg} />
+        <img src={'http://localhost:2048/api/file/file/' + props.post.filename} alt="" />
       </div>
       <div className={styles.postDetails + " py-2 px-3"}>
         <div className={"d-flex justify-content-between align-items-center"}>
@@ -49,7 +52,7 @@ function PostContent() {
           </div>
         </div>
         <div className={styles.postDescription}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
+          {props.post.description}
         </div>
       </div>
     </div>

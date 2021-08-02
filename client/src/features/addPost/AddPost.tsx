@@ -2,6 +2,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './AddPost.module.scss';
 import btnStyles from '../styles/Button.module.scss';
+import drawerStyles from '../styles/Drawer.module.scss';
 import { Drawer } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +16,7 @@ export function AddPost() {
   const onClose = () => setDrawer(false)
   return (
     <div className={styles.addPost}>
-      <Drawer classes={{ paper: styles.drawer }} anchor={anchor} open={drawer} onClose={onClose}>
+      <Drawer classes={{ paper: drawerStyles.drawer }} anchor={anchor} open={drawer} onClose={onClose}>
         <AddPostDrawer onClose={onClose} />
       </Drawer>
       <AddPostBtn onClick={() => setDrawer(true)} />

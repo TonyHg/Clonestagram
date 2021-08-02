@@ -1,5 +1,6 @@
 import styles from './Auth.module.scss';
 import btnStyles from '../styles/Button.module.scss';
+import inputStyles from '../styles/Input.module.scss';
 import { connect } from '../auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,18 +58,18 @@ function Login() {
 
   return (
     <form onSubmit={onLogin} className={styles.authLogin + " column col-5 col-xs-12"}>
-      <div className={styles.formTitle}>
+      <div className={inputStyles.formTitle}>
         Login
       </div>
-      <div className={styles.inputWrapper}>
-        <input className={styles.inputText + ` ${error ? styles.error : ""}`} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
-        <span className={styles.inputIcon}>
+      <div className={inputStyles.inputWrapper}>
+        <input className={inputStyles.inputText + ` ${error ? inputStyles.error : ""}`} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
+        <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faEnvelope} />
         </span>
       </div>
-      <div className={styles.inputWrapper}>
-        <input className={styles.inputText + ` ${error ? styles.error : ""}`} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
-        <span className={styles.inputIcon}>
+      <div className={inputStyles.inputWrapper}>
+        <input className={inputStyles.inputText + ` ${error ? inputStyles.error : ""}`} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
+        <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faLock} />
         </span>
       </div>
@@ -113,24 +114,24 @@ function Register() {
 
   return (
     <form onSubmit={onRegister} className={styles.authLogin + " column col-5 col-xs-12"}>
-      <div className={styles.formTitle}>
+      <div className={inputStyles.formTitle}>
         Register
       </div>
-      <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="text" name="name" placeholder="Username" value={user.name} onChange={onChange} required />
-        <span className={styles.inputIcon}>
+      <div className={inputStyles.inputWrapper}>
+        <input className={inputStyles.inputText} type="text" name="name" placeholder="Username" value={user.name} onChange={onChange} required />
+        <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faUser} />
         </span>
       </div>
-      <div className={styles.inputWrapper}>
-        <input className={styles.inputText + ` ${error ? styles.error : ""}`} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
-        <span className={styles.inputIcon}>
+      <div className={inputStyles.inputWrapper}>
+        <input className={inputStyles.inputText + ` ${error ? styles.error : ""}`} type="text" name="email" placeholder="Email" value={user.email} onChange={onChange} required />
+        <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faEnvelope} />
         </span>
       </div>
-      <div className={styles.inputWrapper}>
-        <input className={styles.inputText} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
-        <span className={styles.inputIcon}>
+      <div className={inputStyles.inputWrapper}>
+        <input className={inputStyles.inputText} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
+        <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faLock} />
         </span>
       </div>

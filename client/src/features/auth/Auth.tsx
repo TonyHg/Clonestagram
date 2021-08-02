@@ -47,7 +47,7 @@ function Login() {
     setError(false)
     UserRequest.loginUser(user)
       .then((data) => {
-        console.log(`data: ${data}`)
+        console.log(data)
         dispatch(connect(data))
       })
       .catch((err) => {
@@ -103,7 +103,7 @@ function Register() {
     setError(false)
     UserRequest.createUser(user)
       .then((data) => {
-        console.log(`data: ${data}`)
+        console.log(data)
         dispatch(connect(data))
       })
       .catch((err) => {

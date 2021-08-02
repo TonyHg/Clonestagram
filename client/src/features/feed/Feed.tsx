@@ -1,13 +1,13 @@
 import react, { useEffect, useState } from 'react';
 import { PostRequest } from '../../api/post.api';
-import { IPost } from '../../models/post.interface';
+import { IPost, IPostWithUser } from '../../models/post.interface';
 
 import { Post } from '../post/Post';
 
 import styles from './Feed.module.scss';
 
 export function Feed() {
-  const initialState: IPost[] = []
+  const initialState: IPostWithUser[] = []
   const [posts, setPosts] = useState(initialState)
   useEffect(() => {
     PostRequest.getPosts()

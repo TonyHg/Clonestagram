@@ -4,6 +4,6 @@ const Post = require("../models/post.model");
 
 exports.getAllPost = () => {
   // const posts = db.collection("posts");
-  const posts = Post.find();
+  const posts = Post.find().populate("user");
   return posts;
 };

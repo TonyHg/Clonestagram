@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let PostSchema = new Schema({
-  userId: { type: String, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   file: { type: Object, required: true },
   filename: { type: String, required: true },
   description: { type: String, required: true },

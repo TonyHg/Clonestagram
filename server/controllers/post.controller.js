@@ -1,11 +1,16 @@
 const Post = require("../models/post.model");
 const PostRepository = require("../repositories/post.repository");
+const UserRepository = require("../repositories/user.repository");
 
 exports.create = (req, res, next) => {
   console.log(req.file);
   console.log(req.body);
+
+  const ObjectId = require("mongodb").ObjectId;
+  const o_id = new ObjectId(req.body.userId);
+
   let post = new Post({
-    userId: req.body.userId,
+    user: o_id,
     file: req.file,
     filename: req.body.filename,
     description: req.body.description,

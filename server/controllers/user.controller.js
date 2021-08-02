@@ -24,7 +24,7 @@ exports.create = (req, res, next) => {
       return next(err);
     }
 
-    res.send("User created sucessfully");
+    this.login(req, res, next);
   });
 };
 
@@ -39,7 +39,7 @@ exports.login = (req, res, next) => {
           hash: data.hash,
         });
         if (user.validatePassword(req.body.password)) {
-          res.send(user.toAuthJSON());
+          res.send(user.toAuthJSON(data._id));
         }
         res.status(501).send("wrong email/password");
       }

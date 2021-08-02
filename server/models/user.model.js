@@ -42,9 +42,9 @@ UserSchema.methods.generateJWT = function () {
   );
 };
 
-UserSchema.methods.toAuthJSON = function () {
+UserSchema.methods.toAuthJSON = function (id) {
   return {
-    _id: this._id,
+    _id: id,
     email: this.email,
     token: this.generateJWT(),
   };

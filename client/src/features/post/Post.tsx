@@ -4,11 +4,11 @@ import testImg from '../../assets/img/image 1.png';
 import testIcon from '../../assets/img/image 2.png';
 
 import styles from './Post.module.scss';
-import { IPost } from '../../models/post.interface';
+import { IPost, IPostWithUser } from '../../models/post.interface';
 import { useEffect, useState } from 'react';
 import { FileRequest } from '../../api/file.api';
 
-export function Post(props: { post: IPost }) {
+export function Post(props: { post: IPostWithUser }) {
   return (
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
       <PostHeader />
@@ -33,7 +33,7 @@ function PostHeader() {
   )
 }
 
-function PostContent(props: { post: IPost }) {
+function PostContent(props: { post: IPostWithUser }) {
   const date = new Date(props.post.uploadDate)
   return (
     <div className={styles.postContent}>
@@ -46,7 +46,7 @@ function PostContent(props: { post: IPost }) {
             <div className={styles.postDetailsUser}>
               <img src={testIcon} />
             </div>
-            <div className={styles.postDetailsUserName}>Instagram</div>
+            <div className={styles.postDetailsUserName}>{props.post.user.name}</div>
           </div>
           <div className={styles.postTime}>
             posted on {date.toDateString()}

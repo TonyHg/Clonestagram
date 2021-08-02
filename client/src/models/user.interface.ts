@@ -1,3 +1,5 @@
+import { IPost } from "./post.interface";
+
 export interface IUser {
   name: string;
   email: string;
@@ -5,7 +7,8 @@ export interface IUser {
 }
 
 export interface IUserProfileInfo {
-  name: string,
+  user: string,
+  posts: IPost[]
 }
 
 export interface IUserToken {

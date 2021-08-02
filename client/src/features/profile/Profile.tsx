@@ -9,38 +9,39 @@ import { RootState } from '../../app/store';
 
 import testImg from '../../assets/img/image 1.png';
 import testIcon from '../../assets/img/image 2.png';
+import { IPost } from '../../models/post.interface';
 import { IUser, IUserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 
 export function Profile() {
-  const initialState: IUserProfileInfo = { name: "" }
+  const initialState: IUserProfileInfo = { user: "", posts: [] }
   const [user, setUser] = useState(initialState)
-  const userEmail = useSelector((state: RootState) => state.auth.token!!.email)
+  const userId = useSelector((state: RootState) => state.profile.userId)
   useEffect(() => {
-    UserRequest.getUser(userEmail).then((data) => {
-      const userProfileInfo: IUserProfileInfo = { name: data.name || "no name" }
+    UserRequest.getUserProfile(userId).then((data) => {
+      console.log(data)
+      const userProfileInfo: IUserProfileInfo = { user: data.user || "no name", posts: data.posts || [] }
       setUser(userProfileInfo)
-    })
-
-  }, [userEmail])
+    }).catch((err) => console.log(err))
+  }, [userId])
 
   return (
     <div className={styles.profile + " d-flex"}>
-      <UserInfo name={user.name} />
-      <Portfolio />
+      <UserInfo user={user.user} />
+      <Portfolio posts={user.posts} />
     </div>
   )
 }
 
-function UserInfo({ name }: IUserProfileInfo) {
+function UserInfo(props: { user: string }) {
   return (
-    <div className={styles.userInfo + " col-4 d-flex flex-column align-items-center"}>
+    <div className={styles.userInfo + " col-3 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
         <img src={testIcon} />
       </div>
       <div className={styles.userInfoName + " my-3"}>
-        {name}
+        {props.user}
       </div>
       <UserInfoStat icon={faUser} val={42} name="Followers" />
       <UserInfoStat icon={faUsers} val={512} name="Following" />
@@ -79,28 +80,22 @@ function UserActions() {
   )
 }
 
-function Portfolio() {
+function Portfolio(props: { posts: IPost[] }) {
   return (
-    <div className={styles.portfolio + " col-8 d-flex flex-wrap justify-content-between"}>
-      <PortfolioItem />
-      <PortfolioItem />
-      <PortfolioItem />
-      <PortfolioItem />
-      <PortfolioItem />
-      <PortfolioItem />
-      <PortfolioItem />
+    <div className={styles.portfolio + " col-9 d-flex flex-wrap"}>
+      {props.posts.map((post, idx) => <PortfolioItem key={idx} post={post} />)}
     </div>
   )
 }
 
-function PortfolioItem() {
+function PortfolioItem(props: { post: IPost }) {
   return (
     <div className={styles.portfolioItem + " mb-5"}>
       <div className={styles.portfolioItemMedia}>
-        <img src={testImg} />
+        <img src={'http://localhost:2048/api/file/file/' + props.post.filename} />
       </div>
       <div className={styles.portfolioItemDescription + " py-1 px-3"}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
+        {props.post.description}
       </div>
     </div>
   )

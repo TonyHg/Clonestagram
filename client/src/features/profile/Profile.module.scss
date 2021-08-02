@@ -1,7 +1,7 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
 .profile {
-  padding: 64px 15%;
+  padding: 64px 10%;
 
   .userInfo {
     .userInfoImg {
@@ -61,6 +61,8 @@
       border-radius: 20px;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
       overflow-y: hidden;
+      height: min-content;
+      margin-right:60px;
 
       .portfolioItemMedia {
         img {

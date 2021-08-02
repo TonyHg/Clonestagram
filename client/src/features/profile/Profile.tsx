@@ -28,24 +28,24 @@ export function Profile() {
 
   return (
     <div className={styles.profile + " d-flex"}>
-      <UserInfo user={user.user} />
+      <UserInfo user={user} />
       <Portfolio posts={user.posts} />
     </div>
   )
 }
 
-function UserInfo(props: { user: string }) {
+function UserInfo(props: { user: IUserProfileInfo }) {
   return (
     <div className={styles.userInfo + " col-3 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
         <img src={testIcon} />
       </div>
       <div className={styles.userInfoName + " my-3"}>
-        {props.user}
+        {props.user.user}
       </div>
       <UserInfoStat icon={faUser} val={42} name="Followers" />
       <UserInfoStat icon={faUsers} val={512} name="Following" />
-      <UserInfoStat icon={faImage} val={512} name="Post" />
+      <UserInfoStat icon={faImage} val={props.user.posts.length} name="Post" />
       <UserActions />
     </div>
   )

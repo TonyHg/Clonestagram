@@ -34,6 +34,7 @@ function PostHeader() {
 }
 
 function PostContent(props: { post: IPost }) {
+  const date = new Date(props.post.uploadDate)
   return (
     <div className={styles.postContent}>
       <div className={styles.postMedia}>
@@ -48,7 +49,7 @@ function PostContent(props: { post: IPost }) {
             <div className={styles.postDetailsUserName}>Instagram</div>
           </div>
           <div className={styles.postTime}>
-            posted 5 mins ago
+            posted on {date.toDateString()}
           </div>
         </div>
         <div className={styles.postDescription}>

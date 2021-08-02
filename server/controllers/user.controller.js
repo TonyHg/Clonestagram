@@ -1,14 +1,26 @@
 const User = require("../models/user.model");
 const UserRepository = require("../repositories/user.repository");
+const PostRepository = require("../repositories/post.repository");
 
 exports.users = (req, res) => {
   res.send("Send all users");
 };
 
 exports.user = (req, res) => {
-  UserRepository.getUserByEmail(req.params.email)
-    .then((data) => res.send(data))
-    .then((err) => console.log(`User ${req.params.email} not found`));
+  UserRepository.getUserById(req.params.id)
+    .then((user) => {
+      PostRepository.getUserPosts(req.params.id)
+        .then((posts) => {
+          const userProfile = {
+            user: user.name,
+            posts: posts,
+          };
+          console.log(userProfile);
+          res.send(userProfile);
+        })
+        .catch((err) => console.log("Error while fetching"));
+    })
+    .catch((err) => console.log(`User ${req.params.id} not found ${err}`));
 };
 
 exports.create = (req, res, next) => {

@@ -7,3 +7,13 @@ exports.getAllPost = () => {
   const posts = Post.find().populate("user");
   return posts;
 };
+
+exports.getUserPosts = (id) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_id = new ObjectId(id);
+
+  const collection = db.collection("posts");
+  const query = { user: o_id };
+  const posts = collection.find(query);
+  return posts.toArray();
+};

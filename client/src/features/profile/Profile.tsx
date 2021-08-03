@@ -88,10 +88,12 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
   return (
     <div className={styles.userInfo + " col-3 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
-        <div className={styles.userInfoImgEdit + " " + btnStyles.btnHover}>
-          <FontAwesomeIcon className={styles.userInfoImgEditIcon} icon={faPen} onClick={onClick} />
-          <input type='file' id='file' ref={avatarInput} style={{ display: 'none' }} onChange={onChangeFile} />
-        </div>
+        {userId === props.userId &&
+          <div className={styles.userInfoImgEdit + " " + btnStyles.btnHover}>
+            <FontAwesomeIcon className={styles.userInfoImgEditIcon} icon={faPen} onClick={onClick} />
+            <input type='file' id='file' ref={avatarInput} style={{ display: 'none' }} onChange={onChangeFile} />
+          </div>
+        }
         <img src={preview || userAvatar} />
         {preview &&
           <div className={styles.userInfoImgEditValidate + " " + btnStyles.btnHover} onClick={onEdit}>

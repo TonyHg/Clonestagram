@@ -6,10 +6,13 @@ import styles from './Post.module.scss';
 import { IPostWithUser } from '../../models/post.interface';
 import { useEffect, useState } from 'react';
 import { UserRequest } from '../../api/user.api';
+import { useDispatch } from 'react-redux';
+import { switchView, views } from '../../appSlice';
+import { setUser } from '../profile/profileSlice';
 
 export function Post(props: { post: IPostWithUser }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
-
+  const dispatch = useDispatch();
   useEffect(() => {
     UserRequest.getAvatar(props.post.user._id)
       .then((data) => {
@@ -17,19 +20,21 @@ export function Post(props: { post: IPostWithUser }) {
           setAvatar('http://localhost:2048/api/file/file/' + data.message)
       })
   }, [])
+
+  const onClick = () => { dispatch(setUser(props.post.user._id)); dispatch(switchView(views.PROFILE)) }
   return (
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
-      <PostHeader avatar={avatar} />
-      <PostContent post={props.post} avatar={avatar} />
+      <PostHeader avatar={avatar} onClick={onClick} />
+      <PostContent post={props.post} avatar={avatar} onClick={onClick} />
       <PostComments />
     </div>
   )
 }
 
-function PostHeader(props: { avatar: string }) {
+function PostHeader(props: { avatar: string, onClick: () => void }) {
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
-      <div className={styles.postUser}>
+      <div className={styles.postUser} onClick={props.onClick}>
         <img src={props.avatar} />
       </div>
       <div className={styles.postActions + " d-flex flex-column align-items-center"}>
@@ -41,7 +46,7 @@ function PostHeader(props: { avatar: string }) {
   )
 }
 
-function PostContent(props: { post: IPostWithUser, avatar: string }) {
+function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void }) {
   const date = new Date(props.post.uploadDate)
   return (
     <div className={styles.postContent}>
@@ -50,7 +55,7 @@ function PostContent(props: { post: IPostWithUser, avatar: string }) {
       </div>
       <div className={styles.postDetails + " py-2 px-3"}>
         <div className={"d-flex justify-content-between align-items-center"}>
-          <div className={"d-flex align-items-center mb-1"}>
+          <div className={"d-flex align-items-center mb-1"} onClick={props.onClick}>
             <div className={styles.postDetailsUser}>
               <img src={props.avatar} />
             </div>

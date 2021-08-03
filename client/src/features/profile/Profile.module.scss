@@ -5,6 +5,7 @@
 
   .userInfo {
     .userInfoImg {
+      position: relative;
       width: 128px;
       height: 128px;
       border-radius: 100%;
@@ -13,6 +14,27 @@
         width: 100%;
         border-radius: 100%;
         object-fit: cover;
+      }
+
+      .userInfoImgEdit, .userInfoImgEditValidate {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border-radius: 100%;
+        background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe);
+        box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+        display: flex;
+        .userInfoImgEditIcon {
+          margin: auto;
+        }
+      }
+      
+      .userInfoImgEditValidate {
+        bottom: 0px;
+        right: 0px;
+        .userInfoImgEditValidateIcon {
+          margin: auto;
+        }
       }
     }
 

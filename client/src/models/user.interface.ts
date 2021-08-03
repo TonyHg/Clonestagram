@@ -22,3 +22,9 @@ export interface IUserToken {
   email: string,
   token: string,
 }
+
+export interface IUserAvatar {
+  userId: string,
+  avatar: File | null,
+  filename: string,
+}

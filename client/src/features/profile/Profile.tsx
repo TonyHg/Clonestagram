@@ -1,8 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faImage, faUser } from '@fortawesome/free-regular-svg-icons';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPen, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { UserRequest } from '../../api/user.api';
 import { RootState } from '../../app/store';
@@ -13,6 +13,7 @@ import { IPost } from '../../models/post.interface';
 import { IUser, IUserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
+import btnStyles from '../styles/Button.module.scss';
 
 export function Profile() {
   const initialState: IUserProfileInfo = { user: "", posts: [] }
@@ -35,10 +36,45 @@ export function Profile() {
 }
 
 function UserInfo(props: { user: IUserProfileInfo }) {
+  const userId = useSelector((state: RootState) => state.auth.token?._id)
+
+  const avatarInput = useRef<HTMLInputElement>(null)
+  const [avatar, setAvatar] = useState<File>()
+  const [preview, setPreview] = useState("")
+  const onClick = () => {
+    if (avatarInput.current)
+      avatarInput.current.click()
+  }
+
+  const onChangeFile = (e: React.FormEvent<EventTarget>) => {
+    let target = e.target as HTMLInputElement;
+    setAvatar(target.files!![0])
+    setPreview(URL.createObjectURL(target.files!![0]))
+  }
+
+  const onEdit = () => {
+    const userAvatar = {
+      userId: userId,
+      avatar: avatar,
+      filename: avatar?.name || ""
+    }
+    console.log(userAvatar)
+    // UserRequest.setAvatar(userAvatar)
+  }
+
   return (
     <div className={styles.userInfo + " col-3 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
-        <img src={testIcon} />
+        <div className={styles.userInfoImgEdit + " " + btnStyles.btnHover}>
+          <FontAwesomeIcon className={styles.userInfoImgEditIcon} icon={faPen} onClick={onClick} />
+          <input type='file' id='file' ref={avatarInput} style={{ display: 'none' }} onChange={onChangeFile} />
+        </div>
+        <img src={preview || testIcon} />
+        {preview &&
+          <div className={styles.userInfoImgEditValidate + " " + btnStyles.btnHover} onClick={onEdit}>
+            <FontAwesomeIcon className={styles.userInfoImgEditValidateIcon} icon={faCheck} />
+          </div>
+        }
       </div>
       <div className={styles.userInfoName + " my-3"}>
         {props.user.user}

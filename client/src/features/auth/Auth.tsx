@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { UserRequest } from '../../api/user.api';
+import { getAvatar, setAvatar } from '../../appSlice';
 
 export function Auth() {
   return (
@@ -50,6 +51,11 @@ function Login() {
       .then((data) => {
         console.log(data)
         dispatch(connect(data))
+        UserRequest.getAvatar(data._id)
+          .then((data) => {
+            if (data.status) dispatch(setAvatar(data.message))
+          })
+          .catch((err) => console.log(err))
       })
       .catch((err) => {
         setError(true)

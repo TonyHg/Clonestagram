@@ -1,5 +1,5 @@
 import { requests } from './api';
-import { IUser, IUserProfileInfo, IUserToken, IUserUpdate } from '../models/user.interface';
+import { IUser, IUserAvatar, IUserProfileInfo, IUserToken, IUserUpdate } from '../models/user.interface';
 import { IReport } from '../models/report.interface';
 
 export const UserRequest = {
@@ -11,4 +11,12 @@ export const UserRequest = {
   loginUser: (user: IUser): Promise<IUserToken> => requests.post('user/login', user),
   deleteUser: (id: string): Promise<IReport> => requests.delete('user/delete/' + id),
   updateUser: (id: string, user: IUserUpdate): Promise<IReport> => requests.put('user/update/' + id, user),
+  setAvatar: (avatar: IUserAvatar): Promise<IReport> => {
+    const formData = new FormData()
+    formData.append("userId", avatar.userId)
+    formData.append("file", avatar.file!, avatar.file?.name)
+    formData.append("filename", avatar.filename)
+    return requests.postFile('user/avatar', formData)
+  },
+  getAvatar: (id: string): Promise<IReport> => requests.get('user/avatar/' + id),
 };

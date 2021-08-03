@@ -3,17 +3,18 @@ import { faImage, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCheck, faPen, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UserRequest } from '../../api/user.api';
 import { RootState } from '../../app/store';
 
 import testImg from '../../assets/img/image 1.png';
-import testIcon from '../../assets/img/image 2.png';
+import emptyAvatar from '../../assets/img/image 2.png';
 import { IPost } from '../../models/post.interface';
 import { IUser, IUserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 import btnStyles from '../styles/Button.module.scss';
+import { getAvatar, setAvatar } from '../../appSlice';
 
 export function Profile() {
   const initialState: IUserProfileInfo = { user: "", posts: [] }
@@ -29,17 +30,19 @@ export function Profile() {
 
   return (
     <div className={styles.profile + " d-flex"}>
-      <UserInfo user={user} />
+      <UserInfo user={user} userId={userId} />
       <Portfolio posts={user.posts} />
     </div>
   )
 }
 
-function UserInfo(props: { user: IUserProfileInfo }) {
+function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
+  const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.auth.token?._id)
+  const [userAvatar, setUserAvatar] = useState(emptyAvatar)
 
   const avatarInput = useRef<HTMLInputElement>(null)
-  const [avatar, setAvatar] = useState<File>()
+  const [avatar, setAvatarFile] = useState<File>()
   const [preview, setPreview] = useState("")
   const onClick = () => {
     if (avatarInput.current)
@@ -48,19 +51,39 @@ function UserInfo(props: { user: IUserProfileInfo }) {
 
   const onChangeFile = (e: React.FormEvent<EventTarget>) => {
     let target = e.target as HTMLInputElement;
-    setAvatar(target.files!![0])
+    setAvatarFile(target.files!![0])
     setPreview(URL.createObjectURL(target.files!![0]))
   }
 
   const onEdit = () => {
     const userAvatar = {
-      userId: userId,
-      avatar: avatar,
+      userId: userId || "",
+      file: avatar || null,
       filename: avatar?.name || ""
     }
     console.log(userAvatar)
-    // UserRequest.setAvatar(userAvatar)
+    UserRequest.setAvatar(userAvatar)
+      .then((data) => {
+        if (data.status) {
+          UserRequest.getAvatar(userAvatar.userId)
+            .then((data) => {
+              if (data.status) {
+                dispatch(setAvatar(data.message))
+                setAvatarFile(undefined)
+                setPreview("")
+              }
+            })
+            .catch((err) => console.log(err))
+        }
+      })
+      .catch((err) => console.log(err))
   }
+
+  useEffect(() => {
+    UserRequest.getAvatar(props.userId).then((data) => {
+      if (data.status) setUserAvatar('http://localhost:2048/api/file/file/' + data.message)
+    })
+  }, [onEdit])
 
   return (
     <div className={styles.userInfo + " col-3 d-flex flex-column align-items-center"}>
@@ -69,7 +92,7 @@ function UserInfo(props: { user: IUserProfileInfo }) {
           <FontAwesomeIcon className={styles.userInfoImgEditIcon} icon={faPen} onClick={onClick} />
           <input type='file' id='file' ref={avatarInput} style={{ display: 'none' }} onChange={onChangeFile} />
         </div>
-        <img src={preview || testIcon} />
+        <img src={preview || userAvatar} />
         {preview &&
           <div className={styles.userInfoImgEditValidate + " " + btnStyles.btnHover} onClick={onEdit}>
             <FontAwesomeIcon className={styles.userInfoImgEditValidateIcon} icon={faCheck} />

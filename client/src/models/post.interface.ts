@@ -1,4 +1,4 @@
-import { IUser } from "./user.interface";
+import { IUserPublic } from "./user.interface";
 
 export interface IPost {
   userId: string,
@@ -9,7 +9,8 @@ export interface IPost {
 }
 
 export interface IPostWithUser {
-  user: IUser,
+  _id: string,
+  user: IUserPublic,
   file: File | null,
   filename: string,
   description: string,

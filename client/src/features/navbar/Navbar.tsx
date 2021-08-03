@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faSlidersH, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import testIcon from '../../assets/img/image 2.png';
 
 import styles from './Navbar.module.scss';
 
@@ -19,6 +18,7 @@ import { Settings } from '../settings/Settings';
 export function Navbar() {
   const dispatch = useDispatch()
   const userId = useSelector((state: RootState) => state.auth.token?._id) || ""
+  const avatar = useSelector((state: RootState) => state.app.avatar)
 
   const [drawer, setDrawer] = useState(false)
   const onClose = () => setDrawer(false)
@@ -32,7 +32,7 @@ export function Navbar() {
       <Search />
       <div className={styles.navbarActions + " d-flex align-items-center"}>
         <div className={styles.navbarUser} onClick={() => { dispatch(setUser(userId)); dispatch(switchView(views.PROFILE)) }}>
-          <img src={testIcon} />
+          <img src={avatar} />
         </div>
         <div onClick={() => dispatch(switchView(views.MESSENGER))}>
           <FontAwesomeIcon icon={faPaperPlane} />

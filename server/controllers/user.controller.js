@@ -1,6 +1,9 @@
 const User = require("../models/user.model");
 const UserRepository = require("../repositories/user.repository");
 const PostRepository = require("../repositories/post.repository");
+const AvatarRepository = require("../repositories/avatar.repository");
+
+const Avatar = require("../models/avatar.model");
 
 exports.users = (req, res) => {
   res.send("Send all users");
@@ -87,4 +90,34 @@ exports.update = (req, res, next) => {
       console.log(err);
       res.send({ status: false, message: "Update username failed" });
     });
+};
+
+exports.setAvatar = (req, res, next) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_id = new ObjectId(req.body.userId);
+
+  let avatar = new Avatar({
+    user: o_id,
+    file: req.file,
+    filename: req.body.filename,
+  });
+
+  AvatarRepository.deleteUserAvatar(o_id).then((data) => {
+    avatar.save((err) => {
+      if (err) {
+        res.send({ status: false, message: "Avatar set failed" });
+      } else {
+        res.send({ status: true, message: "Avatar set sucessfully" });
+      }
+    });
+  });
+};
+
+exports.getAvatar = (req, res) => {
+  AvatarRepository.getUserAvatar(req.params.id)
+    .then((avatar) => {
+      if (avatar) res.send({ status: true, message: avatar.filename });
+      else res.send({ status: false, message: "Avatar not found" });
+    })
+    .catch((err) => console.log(err));
 };

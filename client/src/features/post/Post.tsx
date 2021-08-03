@@ -1,28 +1,36 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faPaperPlane, faComment } from '@fortawesome/free-regular-svg-icons';
-import testImg from '../../assets/img/image 1.png';
-import testIcon from '../../assets/img/image 2.png';
+import emptyAvatar from '../../assets/img/image 2.png';
 
 import styles from './Post.module.scss';
-import { IPost, IPostWithUser } from '../../models/post.interface';
+import { IPostWithUser } from '../../models/post.interface';
 import { useEffect, useState } from 'react';
-import { FileRequest } from '../../api/file.api';
+import { UserRequest } from '../../api/user.api';
 
 export function Post(props: { post: IPostWithUser }) {
+  const [avatar, setAvatar] = useState(emptyAvatar)
+
+  useEffect(() => {
+    UserRequest.getAvatar(props.post.user._id)
+      .then((data) => {
+        if (data.status)
+          setAvatar('http://localhost:2048/api/file/file/' + data.message)
+      })
+  }, [])
   return (
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
-      <PostHeader />
-      <PostContent post={props.post} />
+      <PostHeader avatar={avatar} />
+      <PostContent post={props.post} avatar={avatar} />
       <PostComments />
     </div>
   )
 }
 
-function PostHeader() {
+function PostHeader(props: { avatar: string }) {
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
       <div className={styles.postUser}>
-        <img src={testIcon} />
+        <img src={props.avatar} />
       </div>
       <div className={styles.postActions + " d-flex flex-column align-items-center"}>
         <FontAwesomeIcon icon={faHeart} size="2x" className="mb-2" />
@@ -33,7 +41,7 @@ function PostHeader() {
   )
 }
 
-function PostContent(props: { post: IPostWithUser }) {
+function PostContent(props: { post: IPostWithUser, avatar: string }) {
   const date = new Date(props.post.uploadDate)
   return (
     <div className={styles.postContent}>
@@ -44,7 +52,7 @@ function PostContent(props: { post: IPostWithUser }) {
         <div className={"d-flex justify-content-between align-items-center"}>
           <div className={"d-flex align-items-center mb-1"}>
             <div className={styles.postDetailsUser}>
-              <img src={testIcon} />
+              <img src={props.avatar} />
             </div>
             <div className={styles.postDetailsUserName}>{props.post.user.name}</div>
           </div>
@@ -80,7 +88,7 @@ function PostComment() {
       <div className={styles.postCommentHeader + " d-flex align-items-center justify-content-between"}>
         <div className={styles.postCommentHeaderUser + " d-flex align-items-center"}>
           <div className={styles.postCommentHeaderUserImg}>
-            <img src={testIcon} />
+            <img src={emptyAvatar} />
           </div>
           <div className={styles.postCommentHeaderUserName}>
             Thdesign

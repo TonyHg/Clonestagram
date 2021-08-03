@@ -6,6 +6,11 @@ export interface IUser {
   password: string;
 }
 
+export interface IUserPublic {
+  _id: string;
+  name: string;
+}
+
 export interface IUserUpdate {
   name: string;
   password: string;
@@ -25,6 +30,6 @@ export interface IUserToken {
 
 export interface IUserAvatar {
   userId: string,
-  avatar: File | null,
+  file: File | null,
   filename: string,
 }

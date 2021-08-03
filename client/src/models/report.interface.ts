@@ -1,4 +1,4 @@
 export interface IReport {
-  status: string,
+  status: boolean,
   message: string,
 }

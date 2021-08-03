@@ -1,3 +1,5 @@
+const dbUtils = require("../utils/dbUtils");
+const upload = dbUtils.getUpload();
 const express = require("express");
 const router = express.Router();
 
@@ -10,5 +12,7 @@ router.post("/create", userController.create);
 router.post("/login", userController.login);
 router.delete("/delete/:id", userController.delete);
 router.put("/update/:id", userController.update);
+router.post("/avatar", upload.single("file"), userController.setAvatar);
+router.get("/avatar/:id", userController.getAvatar);
 
 module.exports = router;

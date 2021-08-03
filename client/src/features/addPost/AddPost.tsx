@@ -35,6 +35,7 @@ function AddPostDrawer(props: { onClose: () => void }) {
   }
 
   const [post, setPost] = useState(initialState);
+  const [preview, setPreview] = useState("")
 
   const onAddPost = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault()
@@ -55,6 +56,7 @@ function AddPostDrawer(props: { onClose: () => void }) {
   const onChangeFile = (e: React.FormEvent<EventTarget>) => {
     let target = e.target as HTMLInputElement;
     setPost({ ...post, ['file']: target.files!![0] })
+    setPreview(URL.createObjectURL(target.files!![0]))
   }
 
   return (
@@ -64,6 +66,9 @@ function AddPostDrawer(props: { onClose: () => void }) {
           Media
         </div>
         <input type="file" name="file" onChange={onChangeFile} />
+        <div className={styles.addPostDrawerPreview}>
+          <img src={preview} />
+        </div>
       </div>
       <div className={styles.addPostDrawerDescription + " d-flex flex-column col-6"}>
         <div className={styles.addPostDrawerTitle}>

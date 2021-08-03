@@ -14,7 +14,7 @@ import { IUser, IUserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 import btnStyles from '../styles/Button.module.scss';
-import { getAvatar, setAvatar } from '../../appSlice';
+import { setAvatar } from '../../appSlice';
 
 export function Profile() {
   const initialState: IUserProfileInfo = { user: "", posts: [] }

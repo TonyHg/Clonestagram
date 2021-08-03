@@ -8,7 +8,7 @@ import styles from './Navbar.module.scss';
 
 import { Search } from '../search/Search';
 
-import { switchView, views } from '../../appSlice';
+import { clearAvatar, setAvatar, switchView, views } from '../../appSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { disconnect } from '../auth/authSlice';
 import { RootState } from '../../app/store';
@@ -42,7 +42,7 @@ export function Navbar() {
           <FontAwesomeIcon icon={faSlidersH} />
         </div>
 
-        <div onClick={() => dispatch(disconnect())}>
+        <div onClick={() => { dispatch(disconnect()); dispatch(clearAvatar()) }}>
           <FontAwesomeIcon icon={faSignOutAlt} />
         </div>
       </div>

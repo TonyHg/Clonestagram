@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { UserRequest } from '../../api/user.api';
-import { getAvatar, setAvatar } from '../../appSlice';
+import { setAvatar } from '../../appSlice';
 
 export function Auth() {
   return (

@@ -32,10 +32,11 @@ export const appSlice = createSlice({
       state.avatar = 'http://localhost:2048/api/file/file/' + action.payload
     },
 
-    getAvatar(state, action: PayloadAction<string>) {
+    clearAvatar(state) {
+      state.avatar = emptyAvatar
     }
   },
 })
 
-export const { switchView, setAvatar, getAvatar } = appSlice.actions;
+export const { switchView, setAvatar, clearAvatar } = appSlice.actions;
 export default appSlice.reducer;

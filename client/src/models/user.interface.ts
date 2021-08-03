@@ -16,3 +16,8 @@ export interface IUserToken {
   email: string,
   token: string,
 }
+
+export interface IUserDeletion {
+  status: boolean,
+  message: string,
+}

@@ -6,11 +6,18 @@ import drawerStyles from '../styles/Drawer.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
+import { UserRequest } from '../../api/user.api';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { disconnect } from '../auth/authSlice';
 
 export function Settings(props: { drawer: boolean, onClose: () => void }) {
+  const dispatch = useDispatch();
   const anchor = 'bottom';
   const [error, setError] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState(false)
+  const userId = useSelector((state: RootState) => state.auth.token?._id) || ""
+
 
   const [user, setUser] = useState({
     email: '',
@@ -34,7 +41,11 @@ export function Settings(props: { drawer: boolean, onClose: () => void }) {
     if (!deleteConfirmation) {
       setDeleteConfirmation(true)
     } else {
-      console.log("this account will be deleted");
+      UserRequest.deleteUser(userId)
+        .then((data) => {
+          dispatch(disconnect())
+        })
+        .catch((err) => console.log(err))
     }
   }
 

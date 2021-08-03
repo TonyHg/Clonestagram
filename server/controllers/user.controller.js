@@ -52,9 +52,22 @@ exports.login = (req, res, next) => {
         });
         if (user.validatePassword(req.body.password)) {
           res.send(user.toAuthJSON(data._id));
+        } else {
+          res.status(401).send("wrong email/password");
         }
-        res.status(501).send("wrong email/password");
       }
     })
-    .then((err) => res.status(501).send("wrong email/password"));
+    .catch((err) => res.status(401).send("wrong email/password"));
+};
+
+exports.delete = (req, res, next) => {
+  PostRepository.deleteUserPosts(req.params.id)
+    .then((ret) => {
+      UserRepository.deleteUser(req.params.id)
+        .then((data) => {
+          res.send({ status: true, message: "Account deleted" });
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
 };

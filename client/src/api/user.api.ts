@@ -1,5 +1,5 @@
 import { requests } from './api';
-import { IUser, IUserProfileInfo, IUserToken } from '../models/user.interface';
+import { IUser, IUserDeletion, IUserProfileInfo, IUserToken } from '../models/user.interface';
 
 export const UserRequest = {
   getUsers: (): Promise<IUser[]> => requests.get('user/users'),
@@ -8,4 +8,5 @@ export const UserRequest = {
   createUser: (user: IUser): Promise<IUserToken> =>
     requests.post('user/create', user),
   loginUser: (user: IUser): Promise<IUserToken> => requests.post('user/login', user),
+  deleteUser: (id: string): Promise<IUserDeletion> => requests.delete('user/delete/' + id),
 };

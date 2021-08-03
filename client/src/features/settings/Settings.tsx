@@ -17,11 +17,11 @@ export function Settings(props: { drawer: boolean, onClose: () => void }) {
   const [error, setError] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState(false)
   const userId = useSelector((state: RootState) => state.auth.token?._id) || ""
+  const username = useSelector((state: RootState) => state.auth.token?.name) || ""
 
 
   const [user, setUser] = useState({
-    email: '',
-    name: '',
+    name: username,
     password: '',
   });
 
@@ -34,7 +34,12 @@ export function Settings(props: { drawer: boolean, onClose: () => void }) {
   const onSave = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault()
     setError(false)
-    props.onClose()
+    UserRequest.updateUser(userId, user)
+      .then((data) => {
+        console.log(data)
+        props.onClose()
+      })
+      .catch((err) => setError(true));
   }
 
   const onDelete = () => {
@@ -57,13 +62,13 @@ export function Settings(props: { drawer: boolean, onClose: () => void }) {
             Settings
           </div>
           <div className={inputStyles.inputWrapper}>
-            <input className={inputStyles.inputText} type="text" name="name" placeholder="Username" value={user.name} onChange={onChange} required />
+            <input className={inputStyles.inputText} type="text" name="name" placeholder="Username" value={user.name} onChange={onChange} />
             <span className={inputStyles.inputIcon}>
               <FontAwesomeIcon icon={faUser} />
             </span>
           </div>
           <div className={inputStyles.inputWrapper}>
-            <input className={inputStyles.inputText} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} required />
+            <input className={inputStyles.inputText} type="password" name="password" placeholder="Password" value={user.password} onChange={onChange} />
             <span className={inputStyles.inputIcon}>
               <FontAwesomeIcon icon={faLock} />
             </span>
@@ -72,7 +77,7 @@ export function Settings(props: { drawer: boolean, onClose: () => void }) {
             <div className={styles.settingsDeleteBtn + " m-auto" + ` ${deleteConfirmation ? styles.settingsDeleteBtnActive : ""}`} onClick={onDelete}>
               {!deleteConfirmation ? "Delete Account" : "Confirm Deletion"}
             </div>
-            <button className={btnStyles.btnHover + " " + btnStyles.submitButton}>
+            <button className={btnStyles.btnHover + " " + btnStyles.submitButton} disabled={(user.name === '' || user.name === username) && user.password === ""}>
               Save
             </button>
 

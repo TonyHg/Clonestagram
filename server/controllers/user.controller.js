@@ -71,3 +71,20 @@ exports.delete = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.update = (req, res, next) => {
+  UserRepository.updateUserName(req.params.id, req.body.name)
+    .then((username) => {
+      UserRepository.updateUserPassword(req.params.id, req.body.password)
+        .then((password) =>
+          res.send({ status: true, message: "Update user successful" })
+        )
+        .catch((err) =>
+          res.send({ status: false, message: "Update password failed" })
+        );
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send({ status: false, message: "Update username failed" });
+    });
+};

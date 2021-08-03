@@ -34,6 +34,7 @@ UserSchema.methods.generateJWT = function () {
 
   return jwt.sign(
     {
+      name: this.name,
       email: this.email,
       id: this._id,
       exp: parseInt(expirationDate.getTime() / 1000, 10),
@@ -45,6 +46,7 @@ UserSchema.methods.generateJWT = function () {
 UserSchema.methods.toAuthJSON = function (id) {
   return {
     _id: id,
+    name: this.name,
     email: this.email,
     token: this.generateJWT(),
   };

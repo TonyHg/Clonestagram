@@ -6,6 +6,11 @@ export interface IUser {
   password: string;
 }
 
+export interface IUserUpdate {
+  name: string;
+  password: string;
+}
+
 export interface IUserProfileInfo {
   user: string,
   posts: IPost[]
@@ -13,11 +18,7 @@ export interface IUserProfileInfo {
 
 export interface IUserToken {
   _id: string,
+  name: string,
   email: string,
   token: string,
-}
-
-export interface IUserDeletion {
-  status: boolean,
-  message: string,
 }

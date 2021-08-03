@@ -83,7 +83,7 @@ function UserActions() {
 function Portfolio(props: { posts: IPost[] }) {
   return (
     <div className={styles.portfolio + " col-9 d-flex flex-wrap"}>
-      {props.posts.map((post, idx) => <PortfolioItem key={idx} post={post} />)}
+      {props.posts.length === 0 && <EmptyPortfolio /> || props.posts.map((post, idx) => <PortfolioItem key={idx} post={post} />)}
     </div>
   )
 }
@@ -97,6 +97,14 @@ function PortfolioItem(props: { post: IPost }) {
       <div className={styles.portfolioItemDescription + " py-1 px-3"}>
         {props.post.description}
       </div>
+    </div>
+  )
+}
+
+function EmptyPortfolio() {
+  return (
+    <div className={styles.emptyPortfolio}>
+      No posts yet
     </div>
   )
 }

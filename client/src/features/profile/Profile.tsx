@@ -7,10 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserRequest } from '../../api/user.api';
 import { RootState } from '../../app/store';
 
-import testImg from '../../assets/img/image 1.png';
 import emptyAvatar from '../../assets/img/image 2.png';
 import { IPost } from '../../models/post.interface';
-import { IUser, IUserProfileInfo } from '../../models/user.interface';
+import { IUserProfileInfo } from '../../models/user.interface';
 
 import styles from './Profile.module.scss';
 import btnStyles from '../styles/Button.module.scss';
@@ -40,6 +39,7 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.auth.token?._id)
   const [userAvatar, setUserAvatar] = useState(emptyAvatar)
+  const isUser = userId === props.userId
 
   const avatarInput = useRef<HTMLInputElement>(null)
   const [avatar, setAvatarFile] = useState<File>()
@@ -88,7 +88,7 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
   return (
     <div className={styles.userInfo + " col-3 d-flex flex-column align-items-center"}>
       <div className={styles.userInfoImg}>
-        {userId === props.userId &&
+        {isUser &&
           <div className={styles.userInfoImgEdit + " " + btnStyles.btnHover}>
             <FontAwesomeIcon className={styles.userInfoImgEditIcon} icon={faPen} onClick={onClick} />
             <input type='file' id='file' ref={avatarInput} style={{ display: 'none' }} onChange={onChangeFile} />
@@ -107,7 +107,7 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
       <UserInfoStat icon={faUser} val={42} name="Followers" />
       <UserInfoStat icon={faUsers} val={512} name="Following" />
       <UserInfoStat icon={faImage} val={props.user.posts.length} name="Post" />
-      <UserActions />
+      <UserActions isDisabled={isUser} />
     </div>
   )
 }
@@ -128,14 +128,14 @@ function UserInfoStat({ icon, val, name }: UserInfoStatProp) {
   )
 }
 
-function UserActions() {
+function UserActions(props: { isDisabled: boolean }) {
   return (
     <div className={styles.userInfoActions + " d-flex flex-column"}>
-      <div className={styles.userInfoActionsPrimary + " mb-2 mt-5"}>
-        Follow
-      </div>
-      <div className={styles.userInfoActionsSecondary}>
-        Message
+      <button className={btnStyles.btnHover + " mb-2 mt-5 d-flex " + btnStyles.submitButton} disabled={props.isDisabled}>
+        <span className="m-auto">Follow</span>
+      </button>
+      <div className={btnStyles.btnHover + " mb-2 mt-2 d-flex " + btnStyles.secondaryButton}>
+        <span className="m-auto">Message</span>
       </div>
     </div>
   )

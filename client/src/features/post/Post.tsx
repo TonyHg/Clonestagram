@@ -68,13 +68,18 @@ function PostHeader(props: { avatar: string, onClick: () => void, userId: string
 }
 
 function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void }) {
+  const [like, setLike] = useState(0)
+  useEffect(() => {
+    PostRequest.getLikes(props.post._id)
+      .then((data) => { if (data.status) setLike(data.likes) })
+  }, [])
   const date = new Date(props.post.uploadDate)
   return (
     <div className={styles.postContentWrapper}>
       <div className={styles.postContent}>
         <div className={styles.postLike}>
           <span>
-            200
+            {like}
             <FontAwesomeIcon icon={fasHeart} color="white" />
           </span>
         </div>

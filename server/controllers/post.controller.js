@@ -40,11 +40,11 @@ exports.getAll = async (req, res, next) => {
 exports.getLikes = (req, res) => {
   LikeRepository.getLikes(req.params.id)
     .then((data) => {
-      res.send(data.length);
+      res.send({ status: true, likes: data.length });
     })
     .catch((err) => {
       console.log(err);
-      res.send(0);
+      res.send({ status: false, likes: 0 });
     });
 };
 

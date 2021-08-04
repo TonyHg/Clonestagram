@@ -26,3 +26,7 @@ export interface IPostUser {
   userId: string,
   postId: string,
 }
+
+export interface IPostLikes extends IReport {
+  likes: number,
+}

@@ -2,6 +2,7 @@ import { IReport } from "./report.interface";
 import { IUserPublic } from "./user.interface";
 
 export interface IPost {
+  _id: string,
   userId: string,
   file: File | null,
   filename: string,

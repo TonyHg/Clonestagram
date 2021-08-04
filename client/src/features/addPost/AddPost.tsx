@@ -27,6 +27,7 @@ export function AddPost() {
 function AddPostDrawer(props: { onClose: () => void }) {
   const userId = useSelector((state: RootState) => state.auth.token?._id)
   const initialState: IPost = {
+    _id: '',
     userId: userId || "noUser",
     file: null,
     filename: '',

@@ -1,6 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faImage, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCheck, faPen, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +15,7 @@ import { IUserProfileInfo } from '../../models/user.interface';
 import styles from './Profile.module.scss';
 import btnStyles from '../styles/Button.module.scss';
 import { setAvatar } from '../../appSlice';
+import { PostRequest } from '../../api/post.api';
 
 export function Profile() {
   const initialState: IUserProfileInfo = { user: { _id: "", name: "", followers: 0, following: 0 }, posts: [] }
@@ -181,13 +183,26 @@ function Portfolio(props: { posts: IPost[] }) {
 }
 
 function PortfolioItem(props: { post: IPost }) {
+  const [like, setLike] = useState(0)
+  useEffect(() => {
+    PostRequest.getLikes(props.post._id)
+      .then((data) => { if (data.status) setLike(data.likes) })
+  }, [])
   return (
-    <div className={styles.portfolioItem + " mb-5"}>
-      <div className={styles.portfolioItemMedia}>
-        <img src={'http://localhost:2048/api/file/file/' + props.post.filename} />
-      </div>
-      <div className={styles.portfolioItemDescription + " py-1 px-3"}>
-        {props.post.description}
+    <div className={styles.portfolioItemWrapper}>
+      <div className={styles.portfolioItem + " mb-5"}>
+        <div className={styles.portfolioItemLike}>
+          <span>
+            {like}
+            <FontAwesomeIcon icon={fasHeart} color="white" />
+          </span>
+        </div>
+        <div className={styles.portfolioItemMedia}>
+          <img src={'http://localhost:2048/api/file/file/' + props.post.filename} />
+        </div>
+        <div className={styles.portfolioItemDescription + " py-1 px-3"}>
+          {props.post.description}
+        </div>
       </div>
     </div>
   )

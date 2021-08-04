@@ -3,16 +3,20 @@ import { faHeart, faPaperPlane, faComment } from '@fortawesome/free-regular-svg-
 import emptyAvatar from '../../assets/img/image 2.png';
 
 import styles from './Post.module.scss';
-import { IPostWithUser } from '../../models/post.interface';
+import { IPostUser, IPostWithUser } from '../../models/post.interface';
 import { useEffect, useState } from 'react';
 import { UserRequest } from '../../api/user.api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { switchView, views } from '../../appSlice';
 import { setUser } from '../profile/profileSlice';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import { RootState } from '../../app/store';
+import { PostRequest } from '../../api/post.api';
 
 export function Post(props: { post: IPostWithUser }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
+  const userId = useSelector((state: RootState) => state.auth.token?._id) || ""
+
   const dispatch = useDispatch();
   useEffect(() => {
     UserRequest.getAvatar(props.post.user._id)
@@ -25,18 +29,30 @@ export function Post(props: { post: IPostWithUser }) {
   const onClick = () => { dispatch(setUser(props.post.user._id)); dispatch(switchView(views.PROFILE)) }
   return (
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
-      <PostHeader avatar={avatar} onClick={onClick} />
+      <PostHeader avatar={avatar} onClick={onClick} userId={userId} postId={props.post._id} />
       <PostContent post={props.post} avatar={avatar} onClick={onClick} />
       <PostComments />
     </div>
   )
 }
 
-function PostHeader(props: { avatar: string, onClick: () => void }) {
+function PostHeader(props: { avatar: string, onClick: () => void, userId: string, postId: string }) {
+  const postUser: IPostUser = { userId: props.userId, postId: props.postId }
   const [like, setLike] = useState(false)
   const onLike = () => {
-    setLike(!like)
+    if (like) {
+      PostRequest.unlike(postUser).then((data) => { if (data.status) setLike(false) })
+    } else {
+      PostRequest.like(postUser).then((data) => { if (data.status) setLike(true) })
+    }
   }
+
+  useEffect(() => {
+    PostRequest.isLiked(postUser)
+      .then((data) => {
+        if (data.status) setLike(true)
+      })
+  }, [])
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
       <div className={styles.postUser} onClick={props.onClick}>

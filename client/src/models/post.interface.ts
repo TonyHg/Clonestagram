@@ -1,3 +1,4 @@
+import { IReport } from "./report.interface";
 import { IUserPublic } from "./user.interface";
 
 export interface IPost {
@@ -19,4 +20,9 @@ export interface IPostWithUser {
 
 export interface IFeedPosts {
   posts: IPostWithUser[]
+}
+
+export interface IPostUser {
+  userId: string,
+  postId: string,
 }

@@ -9,7 +9,7 @@ import { UserRequest } from '../../api/user.api';
 import { useDispatch, useSelector } from 'react-redux';
 import { switchView, views } from '../../appSlice';
 import { setUser } from '../profile/profileSlice';
-import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { RootState } from '../../app/store';
 import { PostRequest } from '../../api/post.api';
 
@@ -124,7 +124,6 @@ function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () =
 function PostComments(props: { post: IPostWithUser, userId: string }) {
   const [comments, setComments] = useState<IPostCommentWithUser[]>([])
 
-  const refresh = () => { }
   const [comment, setComment] = useState("")
   const onChange = (e: React.FormEvent<EventTarget>) => {
     let target = e.target as HTMLInputElement;
@@ -140,17 +139,16 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
     }
     PostRequest.comment(postComment).then((data) => {
       setComment("")
-      refresh()
     })
   }
 
   useEffect(() => {
     PostRequest.getComments(props.post._id)
       .then((data) => { if (data.status) setComments(data.comments) })
-  }, [refresh])
+  }, [])
   return (
     <div className={styles.postComments}>
-      {comments.map(c => <PostComment key={c._id} comment={c} />)}
+      {comments.map(c => <PostComment key={c._id} comment={c} userId={props.userId} />)}
       <form className={styles.postInput + " d-flex align-items-center justify-content-between"}>
         <input type="text" placeholder="Write a comment" value={comment} onChange={onChange} className={styles.postInputText} />
         <FontAwesomeIcon icon={faPaperPlane} onClick={onComment} />
@@ -160,7 +158,7 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
   )
 }
 
-function PostComment(props: { comment: IPostCommentWithUser }) {
+function PostComment(props: { comment: IPostCommentWithUser, userId: string }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
   useEffect(() => {
     UserRequest.getAvatar(props.comment.user._id)
@@ -169,20 +167,47 @@ function PostComment(props: { comment: IPostCommentWithUser }) {
           setAvatar('http://localhost:2048/api/file/file/' + data.message)
       })
   }, [])
-  const date = new Date(props.comment.uploadDate)
+
+  const dispatch = useDispatch()
+  const onClick = () => { dispatch(setUser(props.comment.user._id)); dispatch(switchView(views.PROFILE)) }
+  const date = "Posted " + new Date(props.comment.uploadDate).toDateString()
+
+  const [del, setDel] = useState(false)
+  const [confirm, setConfirm] = useState(false)
+  const onMouseOver = () => {
+    if (props.comment.user._id === props.userId) {
+      setDel(true)
+    }
+  }
+  const onMouseLeave = () => {
+    setDel(false)
+    setConfirm(false)
+  }
+
+  const onDelete = () => {
+    if (!confirm) {
+      setConfirm(true)
+    } else {
+      PostRequest.uncomment(props.comment._id)
+        .then((data) => {
+          if (data.status) console.log("uncomment")
+        })
+    }
+  }
+
   return (
-    <div className={styles.postComment}>
+    <div className={styles.postComment} onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
       <div className={styles.postCommentHeader + " d-flex align-items-center justify-content-between"}>
         <div className={styles.postCommentHeaderUser + " d-flex align-items-center"}>
-          <div className={styles.postCommentHeaderUserImg}>
+          <div className={styles.postCommentHeaderUserImg} onClick={onClick}>
             <img src={avatar} />
           </div>
-          <div className={styles.postCommentHeaderUserName}>
+          <div className={styles.postCommentHeaderUserName} onClick={onClick}>
             {props.comment.user.name || "no user"}
           </div>
         </div>
         <div className={styles.postCommentHeaderTime}>
-          Posted {date.toDateString()}
+          {del ? <span className={styles.postCommentHeaderDelete} onClick={onDelete}>{confirm ? "Confirm deletion " : "Delete "}</span> : date}
         </div>
       </div>
       <div className={styles.postCommentText}>

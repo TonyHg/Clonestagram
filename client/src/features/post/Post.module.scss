@@ -81,7 +81,7 @@
   }
 }
 
-.postDetailsUserName {
+.postDetailsUserName, .postCommentHeaderUserName {
   cursor: pointer;
 }
 
@@ -116,7 +116,12 @@
     .postCommentHeaderTime {
       font-size: 12px;
       text-transform: uppercase;
-      color:rgb(149, 157, 165)
+      color:rgb(149, 157, 165);
+
+      .postCommentHeaderDelete {
+        cursor:pointer;
+        color:lightcoral;
+      }
     }
   }
 
@@ -133,6 +138,11 @@
 
 .postInput {
   .postInputText {
-    width: 490px;
+    width: 480px;
+    margin-right: 10px;
+  }
+
+  svg {
+    cursor: pointer;
   }
 }

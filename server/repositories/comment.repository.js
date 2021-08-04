@@ -13,7 +13,7 @@ exports.getComments = (postId) => {
 
 exports.deleteComment = (commentId) => {
   const ObjectId = require("mongodb").ObjectId;
-  const o_id = new ObjectId(commmentId);
+  const o_id = new ObjectId(commentId);
 
   const query = { _id: o_id };
   return comments.deleteOne(query);

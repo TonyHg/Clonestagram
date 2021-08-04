@@ -3,7 +3,7 @@ import { faHeart, faPaperPlane, faComment } from '@fortawesome/free-regular-svg-
 import emptyAvatar from '../../assets/img/image 2.png';
 
 import styles from './Post.module.scss';
-import { IPostUser, IPostWithUser } from '../../models/post.interface';
+import { IPostComment, IPostCommentWithUser, IPostUser, IPostWithUser } from '../../models/post.interface';
 import { useEffect, useState } from 'react';
 import { UserRequest } from '../../api/user.api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +31,7 @@ export function Post(props: { post: IPostWithUser }) {
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
       <PostHeader avatar={avatar} onClick={onClick} userId={userId} postId={props.post._id} />
       <PostContent post={props.post} avatar={avatar} onClick={onClick} />
-      <PostComments />
+      <PostComments post={props.post} userId={userId} />
     </div>
   )
 }
@@ -107,38 +107,68 @@ function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () =
   )
 }
 
-function PostComments() {
+function PostComments(props: { post: IPostWithUser, userId: string }) {
+  const [comments, setComments] = useState<IPostCommentWithUser[]>([])
+
+  const [comment, setComment] = useState("")
+  const onChange = (e: React.FormEvent<EventTarget>) => {
+    let target = e.target as HTMLInputElement;
+    setComment(target.value)
+  }
+
+  const onComment = () => {
+    const postComment: IPostComment = {
+      userId: props.userId,
+      postId: props.post._id,
+      comment: comment,
+      uploadDate: new Date().toISOString()
+    }
+    PostRequest.comment(postComment).then((data) => setComment(""))
+  }
+
+  useEffect(() => {
+    PostRequest.getComments(props.post._id)
+      .then((data) => { if (data.status) setComments(data.comments) })
+  }, [])
   return (
     <div className={styles.postComments}>
-      <PostComment />
-      <PostComment />
-      <div className={styles.postInput + " d-flex align-items-center justify-content-between"}>
-        <input type="text" className={styles.postInputText} />
-        <FontAwesomeIcon icon={faPaperPlane} />
-      </div>
+      {comments.map(c => <PostComment key={c._id} comment={c} />)}
+      <form className={styles.postInput + " d-flex align-items-center justify-content-between"}>
+        <input type="text" placeholder="Write a comment" value={comment} onChange={onChange} className={styles.postInputText} />
+        <FontAwesomeIcon icon={faPaperPlane} onClick={onComment} />
+      </form>
 
     </div>
   )
 }
 
-function PostComment() {
+function PostComment(props: { comment: IPostCommentWithUser }) {
+  const [avatar, setAvatar] = useState(emptyAvatar)
+  useEffect(() => {
+    UserRequest.getAvatar(props.comment.user._id)
+      .then((data) => {
+        if (data.status)
+          setAvatar('http://localhost:2048/api/file/file/' + data.message)
+      })
+  }, [])
+  const date = new Date(props.comment.uploadDate)
   return (
     <div className={styles.postComment}>
       <div className={styles.postCommentHeader + " d-flex align-items-center justify-content-between"}>
         <div className={styles.postCommentHeaderUser + " d-flex align-items-center"}>
           <div className={styles.postCommentHeaderUserImg}>
-            <img src={emptyAvatar} />
+            <img src={avatar} />
           </div>
           <div className={styles.postCommentHeaderUserName}>
-            Thdesign
+            {props.comment.user.name || "no user"}
           </div>
         </div>
         <div className={styles.postCommentHeaderTime}>
-          Posted 5 min ago
+          Posted {date.toDateString()}
         </div>
       </div>
       <div className={styles.postCommentText}>
-        Not bad! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis...
+        {props.comment.comment}
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import { requests } from './api';
-import { IFeedPosts, IPost, IPostLikes, IPostUser } from '../models/post.interface';
+import { IFeedPosts, IPost, IPostComment, IPostComments, IPostLikes, IPostUser } from '../models/post.interface';
 import { IReport } from '../models/report.interface';
 
 export const PostRequest = {
@@ -17,4 +17,7 @@ export const PostRequest = {
   isLiked: (postUser: IPostUser): Promise<IReport> => requests.post('post/isLiked', postUser),
   like: (postUser: IPostUser): Promise<IReport> => requests.post('post/like', postUser),
   unlike: (postUser: IPostUser): Promise<IReport> => requests.post('post/unlike', postUser),
+  getComments: (id: string): Promise<IPostComments> => requests.get('post/comments/' + id),
+  comment: (comment: IPostComment): Promise<IReport> => requests.post('post/comment', comment),
+  uncomment: (id: string): Promise<IReport> => requests.delete('post/uncomment/' + id),
 }

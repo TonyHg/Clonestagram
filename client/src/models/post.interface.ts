@@ -31,3 +31,22 @@ export interface IPostUser {
 export interface IPostLikes extends IReport {
   likes: number,
 }
+
+export interface IPostComment {
+  userId: string,
+  postId: string,
+  comment: string,
+  uploadDate: string,
+}
+
+export interface IPostCommentWithUser {
+  _id: string,
+  user: IUserPublic,
+  post: string,
+  comment: string,
+  uploadDate: string,
+}
+
+export interface IPostComments extends IReport {
+  comments: IPostCommentWithUser[]
+}

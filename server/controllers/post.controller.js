@@ -1,8 +1,11 @@
 const Post = require("../models/post.model");
 const PostRepository = require("../repositories/post.repository");
-const LikeRepository = require("../repositories/like.repository");
 
 const Like = require("../models/like.model");
+const LikeRepository = require("../repositories/like.repository");
+
+const Comment = require("../models/comment.model");
+const CommentRepository = require("../repositories/comment.repository");
 
 exports.create = (req, res, next) => {
   console.log(req.file);
@@ -84,5 +87,44 @@ exports.unlike = (req, res) => {
     .catch((err) => {
       console.log(err);
       res.send({ status: false, message: "Post not unliked" });
+    });
+};
+
+exports.getComments = (req, res) => {
+  CommentRepository.getComments(req.params.id)
+    .then((data) => {
+      console.log(data);
+      res.send({ status: true, comments: data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.createComment = (req, res) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_userId = new ObjectId(req.body.userId);
+  const o_postId = new ObjectId(req.body.postId);
+
+  const comment = new Comment({
+    user: o_userId,
+    post: o_postId,
+    comment: req.body.comment,
+    uploadDate: req.body.uploadDate,
+  });
+
+  comment.save((err) => {
+    if (err) res.send({ status: false, message: "Comment not posted" });
+    else res.send({ status: true, message: "Comment posted" });
+  });
+};
+
+exports.deleteComment = (req, res) => {
+  CommentRepository.deleteComment(req.params.id)
+    .then((data) => {
+      res.send({ status: true, message: "Comment deleted" });
+    })
+    .catch((err) => {
+      res.send({ status: false, message: "Comment not deleted" });
     });
 };

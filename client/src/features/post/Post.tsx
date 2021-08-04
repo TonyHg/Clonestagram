@@ -9,6 +9,7 @@ import { UserRequest } from '../../api/user.api';
 import { useDispatch } from 'react-redux';
 import { switchView, views } from '../../appSlice';
 import { setUser } from '../profile/profileSlice';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 
 export function Post(props: { post: IPostWithUser }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
@@ -32,15 +33,19 @@ export function Post(props: { post: IPostWithUser }) {
 }
 
 function PostHeader(props: { avatar: string, onClick: () => void }) {
+  const [like, setLike] = useState(false)
+  const onLike = () => {
+    setLike(!like)
+  }
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
       <div className={styles.postUser} onClick={props.onClick}>
         <img src={props.avatar} />
       </div>
       <div className={styles.postActions + " d-flex flex-column align-items-center"}>
-        <FontAwesomeIcon icon={faHeart} size="2x" className="mb-2" />
-        <FontAwesomeIcon icon={faComment} size="2x" className="mb-2" />
-        <FontAwesomeIcon icon={faPaperPlane} size="2x" className="mb-2" />
+        <FontAwesomeIcon icon={like ? fasHeart : faHeart} size="2x" className="mb-2" onClick={onLike} color={like ? "lightcoral" : "black"} style={{ cursor: "pointer" }} />
+        <FontAwesomeIcon icon={faComment} size="2x" className="mb-2" style={{ cursor: "pointer" }} />
+        <FontAwesomeIcon icon={faPaperPlane} size="2x" className="mb-2" style={{ cursor: "pointer" }} />
       </div>
     </div>
   )

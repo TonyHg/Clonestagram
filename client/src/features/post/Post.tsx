@@ -27,23 +27,25 @@ export function Post(props: { post: IPostWithUser }) {
   }, [])
 
   const onClick = () => { dispatch(setUser(props.post.user._id)); dispatch(switchView(views.PROFILE)) }
-  return (
-    <div className={styles.post + " mt-3 mb-5 d-flex"}>
-      <PostHeader avatar={avatar} onClick={onClick} userId={userId} postId={props.post._id} />
-      <PostContent post={props.post} avatar={avatar} onClick={onClick} />
-      <PostComments post={props.post} userId={userId} />
-    </div>
-  )
-}
 
-function PostHeader(props: { avatar: string, onClick: () => void, userId: string, postId: string }) {
-  const postUser: IPostUser = { userId: props.userId, postId: props.postId }
+  const postUser: IPostUser = { userId: userId, postId: props.post._id }
+  const refresh = () => { }
   const [like, setLike] = useState(false)
   const onLike = () => {
     if (like) {
-      PostRequest.unlike(postUser).then((data) => { if (data.status) setLike(false) })
+      PostRequest.unlike(postUser).then((data) => {
+        if (data.status) {
+          setLike(false)
+          refresh()
+        }
+      })
     } else {
-      PostRequest.like(postUser).then((data) => { if (data.status) setLike(true) })
+      PostRequest.like(postUser).then((data) => {
+        if (data.status) {
+          setLike(true)
+          refresh()
+        }
+      })
     }
   }
 
@@ -53,13 +55,30 @@ function PostHeader(props: { avatar: string, onClick: () => void, userId: string
         if (data.status) setLike(true)
       })
   }, [])
+
+  const [likeCount, setLikeCount] = useState(0)
+  useEffect(() => {
+    PostRequest.getLikes(props.post._id)
+      .then((data) => { if (data.status) setLikeCount(data.likes) })
+  }, [refresh])
+
+  return (
+    <div className={styles.post + " mt-3 mb-5 d-flex"}>
+      <PostHeader avatar={avatar} onClick={onClick} onLike={onLike} like={like} />
+      <PostContent post={props.post} avatar={avatar} onClick={onClick} like={likeCount} />
+      <PostComments post={props.post} userId={userId} />
+    </div>
+  )
+}
+
+function PostHeader(props: { avatar: string, onClick: () => void, onLike: () => void, like: boolean }) {
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
       <div className={styles.postUser} onClick={props.onClick}>
         <img src={props.avatar} />
       </div>
       <div className={styles.postActions + " d-flex flex-column align-items-center"}>
-        <FontAwesomeIcon icon={like ? fasHeart : faHeart} size="2x" className="mb-2" onClick={onLike} color={like ? "lightcoral" : "black"} style={{ cursor: "pointer" }} />
+        <FontAwesomeIcon icon={props.like ? fasHeart : faHeart} size="2x" className="mb-2" onClick={props.onLike} color={props.like ? "lightcoral" : "black"} style={{ cursor: "pointer" }} />
         <FontAwesomeIcon icon={faComment} size="2x" className="mb-2" style={{ cursor: "pointer" }} />
         <FontAwesomeIcon icon={faPaperPlane} size="2x" className="mb-2" style={{ cursor: "pointer" }} />
       </div>
@@ -67,19 +86,14 @@ function PostHeader(props: { avatar: string, onClick: () => void, userId: string
   )
 }
 
-function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void }) {
-  const [like, setLike] = useState(0)
-  useEffect(() => {
-    PostRequest.getLikes(props.post._id)
-      .then((data) => { if (data.status) setLike(data.likes) })
-  }, [])
+function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void, like: number }) {
   const date = new Date(props.post.uploadDate)
   return (
     <div className={styles.postContentWrapper}>
       <div className={styles.postContent}>
         <div className={styles.postLike}>
           <span>
-            {like}
+            {props.like}
             <FontAwesomeIcon icon={fasHeart} color="white" />
           </span>
         </div>
@@ -110,6 +124,7 @@ function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () =
 function PostComments(props: { post: IPostWithUser, userId: string }) {
   const [comments, setComments] = useState<IPostCommentWithUser[]>([])
 
+  const refresh = () => { }
   const [comment, setComment] = useState("")
   const onChange = (e: React.FormEvent<EventTarget>) => {
     let target = e.target as HTMLInputElement;
@@ -123,13 +138,16 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
       comment: comment,
       uploadDate: new Date().toISOString()
     }
-    PostRequest.comment(postComment).then((data) => setComment(""))
+    PostRequest.comment(postComment).then((data) => {
+      setComment("")
+      refresh()
+    })
   }
 
   useEffect(() => {
     PostRequest.getComments(props.post._id)
       .then((data) => { if (data.status) setComments(data.comments) })
-  }, [])
+  }, [refresh])
   return (
     <div className={styles.postComments}>
       {comments.map(c => <PostComment key={c._id} comment={c} />)}

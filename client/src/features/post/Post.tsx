@@ -138,17 +138,25 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
       uploadDate: new Date().toISOString()
     }
     PostRequest.comment(postComment).then((data) => {
-      setComment("")
+      if (data.status) {
+        setComment("")
+        loadComments()
+      }
     })
   }
 
-  useEffect(() => {
+  const loadComments = () => {
     PostRequest.getComments(props.post._id)
       .then((data) => { if (data.status) setComments(data.comments) })
+  }
+
+  useEffect(() => {
+    loadComments()
   }, [])
+
   return (
     <div className={styles.postComments}>
-      {comments.map(c => <PostComment key={c._id} comment={c} userId={props.userId} />)}
+      {comments.map(c => <PostComment key={c._id} comment={c} userId={props.userId} loadComments={loadComments} />)}
       <form className={styles.postInput + " d-flex align-items-center justify-content-between"}>
         <input type="text" placeholder="Write a comment" value={comment} onChange={onChange} className={styles.postInputText} />
         <FontAwesomeIcon icon={faPaperPlane} onClick={onComment} />
@@ -158,7 +166,7 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
   )
 }
 
-function PostComment(props: { comment: IPostCommentWithUser, userId: string }) {
+function PostComment(props: { comment: IPostCommentWithUser, userId: string, loadComments: () => void }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
   useEffect(() => {
     UserRequest.getAvatar(props.comment.user._id)
@@ -190,7 +198,7 @@ function PostComment(props: { comment: IPostCommentWithUser, userId: string }) {
     } else {
       PostRequest.uncomment(props.comment._id)
         .then((data) => {
-          if (data.status) console.log("uncomment")
+          if (data.status) props.loadComments()
         })
     }
   }

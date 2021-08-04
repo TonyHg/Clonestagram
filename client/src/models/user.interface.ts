@@ -9,6 +9,8 @@ export interface IUser {
 export interface IUserPublic {
   _id: string;
   name: string;
+  followers: number;
+  following: number;
 }
 
 export interface IUserUpdate {
@@ -17,7 +19,7 @@ export interface IUserUpdate {
 }
 
 export interface IUserProfileInfo {
-  user: string,
+  user: IUserPublic,
   posts: IPost[]
 }
 

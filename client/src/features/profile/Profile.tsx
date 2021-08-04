@@ -16,30 +16,30 @@ import btnStyles from '../styles/Button.module.scss';
 import { setAvatar } from '../../appSlice';
 
 export function Profile() {
-  const initialState: IUserProfileInfo = { user: "", posts: [] }
+  const initialState: IUserProfileInfo = { user: { _id: "", name: "", followers: 0, following: 0 }, posts: [] }
   const [user, setUser] = useState(initialState)
-  const userId = useSelector((state: RootState) => state.profile.userId)
+  const profileId = useSelector((state: RootState) => state.profile.userId)
   useEffect(() => {
-    UserRequest.getUserProfile(userId).then((data) => {
+    UserRequest.getUserProfile(profileId).then((data) => {
       console.log(data)
       const userProfileInfo: IUserProfileInfo = { user: data.user || "no name", posts: data.posts || [] }
       setUser(userProfileInfo)
     }).catch((err) => console.log(err))
-  }, [userId])
+  }, [profileId])
 
   return (
     <div className={styles.profile + " d-flex"}>
-      <UserInfo user={user} userId={userId} />
+      <UserInfo user={user} profileId={profileId} />
       <Portfolio posts={user.posts} />
     </div>
   )
 }
 
-function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
+function UserInfo(props: { user: IUserProfileInfo, profileId: string }) {
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.auth.token?._id) || ""
   const [userAvatar, setUserAvatar] = useState(emptyAvatar)
-  const isUser = userId === props.userId
+  const isUser = userId === props.profileId
 
   const avatarInput = useRef<HTMLInputElement>(null)
   const [avatar, setAvatarFile] = useState<File>()
@@ -80,7 +80,7 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
   }
 
   useEffect(() => {
-    UserRequest.getAvatar(props.userId).then((data) => {
+    UserRequest.getAvatar(props.profileId).then((data) => {
       if (data.status) setUserAvatar('http://localhost:2048/api/file/file/' + data.message)
     })
   }, [onEdit])
@@ -102,12 +102,12 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
         }
       </div>
       <div className={styles.userInfoName + " my-3"}>
-        {props.user.user}
+        {props.user.user.name}
       </div>
-      <UserInfoStat icon={faUser} val={42} name="Followers" />
-      <UserInfoStat icon={faUsers} val={512} name="Following" />
+      <UserInfoStat icon={faUser} val={props.user.user.followers} name="Followers" />
+      <UserInfoStat icon={faUsers} val={props.user.user.following} name="Following" />
       <UserInfoStat icon={faImage} val={props.user.posts.length} name="Post" />
-      <UserActions userId={userId} profileId={props.userId} isDisabled={isUser} />
+      <UserActions userId={userId} profileId={props.profileId} isDisabled={isUser} />
     </div>
   )
 }

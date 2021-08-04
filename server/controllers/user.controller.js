@@ -16,14 +16,23 @@ exports.user = (req, res) => {
     .then((user) => {
       PostRepository.getUserPosts(req.params.id)
         .then((posts) => {
-          const userProfile = {
-            user: user.name,
-            posts: posts,
-          };
-          console.log(userProfile);
-          res.send(userProfile);
+          FollowRepository.getFollowers(req.params.id).then((followers) => {
+            FollowRepository.getFollowings(req.params.id).then((followings) => {
+              const userProfile = {
+                user: {
+                  _id: req.params.id,
+                  name: user.name,
+                  followers: followers.length,
+                  following: followings.length,
+                },
+                posts: posts,
+              };
+              console.log(userProfile);
+              res.send(userProfile);
+            });
+          });
         })
-        .catch((err) => console.log("Error while fetching"));
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(`User ${req.params.id} not found ${err}`));
 };

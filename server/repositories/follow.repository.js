@@ -7,15 +7,15 @@ exports.getFollowers = (id) => {
   const o_id = new ObjectId(id);
 
   const query = { user: o_id };
-  return follows.find(query).populate("follower").toArray();
+  return follows.find(query).toArray();
 };
 
 exports.getFollowings = (id) => {
   const ObjectId = require("mongodb").ObjectId;
   const o_id = new ObjectId(id);
 
-  const query = { follow: o_id };
-  return follows.find(query).populate("user").toArray();
+  const query = { follower: o_id };
+  return follows.find(query).toArray();
 };
 
 exports.unfollow = (userId, followerId) => {

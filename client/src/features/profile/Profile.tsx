@@ -37,7 +37,7 @@ export function Profile() {
 
 function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.auth.token?._id)
+  const userId = useSelector((state: RootState) => state.auth.token?._id) || ""
   const [userAvatar, setUserAvatar] = useState(emptyAvatar)
   const isUser = userId === props.userId
 
@@ -107,7 +107,7 @@ function UserInfo(props: { user: IUserProfileInfo, userId: string }) {
       <UserInfoStat icon={faUser} val={42} name="Followers" />
       <UserInfoStat icon={faUsers} val={512} name="Following" />
       <UserInfoStat icon={faImage} val={props.user.posts.length} name="Post" />
-      <UserActions isDisabled={isUser} />
+      <UserActions userId={userId} profileId={props.userId} isDisabled={isUser} />
     </div>
   )
 }
@@ -128,11 +128,42 @@ function UserInfoStat({ icon, val, name }: UserInfoStatProp) {
   )
 }
 
-function UserActions(props: { isDisabled: boolean }) {
+function UserActions(props: { userId: string, profileId: string, isDisabled: boolean }) {
+  const [follow, setFollow] = useState(false)
+  const userFollow = { userId: props.profileId, followerId: props.userId }
+
+  const onClick = () => {
+    if (follow) {
+      UserRequest.unfollow(userFollow)
+        .then((data) => {
+          console.log(data);
+          if (data.status) setFollow(false)
+        })
+    } else {
+      UserRequest.follow(userFollow)
+        .then((data) => {
+          console.log(data);
+          if (data.status) setFollow(true)
+        })
+    }
+  }
+
+
+  useEffect(() => {
+    UserRequest.isFollowing(userFollow)
+      .then((data) => {
+        if (data.status) {
+          setFollow(true)
+        } else {
+          setFollow(false)
+        }
+      })
+  }, [])
+
   return (
     <div className={styles.userInfoActions + " d-flex flex-column"}>
-      <button className={btnStyles.btnHover + " mb-2 mt-5 d-flex " + btnStyles.submitButton} disabled={props.isDisabled}>
-        <span className="m-auto">Follow</span>
+      <button className={btnStyles.btnHover + " mb-2 mt-5 d-flex " + btnStyles.submitButton} disabled={props.isDisabled} onClick={onClick}>
+        <span className="m-auto">{follow ? "Unfollow" : "Follow"}</span>
       </button>
       <div className={btnStyles.btnHover + " mb-2 mt-2 d-flex " + btnStyles.secondaryButton}>
         <span className="m-auto">Message</span>

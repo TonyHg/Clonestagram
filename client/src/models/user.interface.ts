@@ -33,3 +33,8 @@ export interface IUserAvatar {
   file: File | null,
   filename: string,
 }
+
+export interface IFollow {
+  userId: string,
+  followerId: string,
+}

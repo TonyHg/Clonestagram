@@ -1,6 +1,7 @@
 import { requests } from './api';
-import { IUser, IUserAvatar, IUserProfileInfo, IUserToken, IUserUpdate } from '../models/user.interface';
+import { IFollow, IUser, IUserAvatar, IUserProfileInfo, IUserToken, IUserUpdate } from '../models/user.interface';
 import { IReport } from '../models/report.interface';
+import { request } from 'http';
 
 export const UserRequest = {
   getUsers: (): Promise<IUser[]> => requests.get('user/users'),
@@ -19,4 +20,7 @@ export const UserRequest = {
     return requests.postFile('user/avatar', formData)
   },
   getAvatar: (id: string): Promise<IReport> => requests.get('user/avatar/' + id),
+  follow: (follow: IFollow): Promise<IReport> => requests.post('user/follow/', follow),
+  unfollow: (follow: IFollow): Promise<IReport> => requests.post('user/unfollow/', follow),
+  isFollowing: (follow: IFollow): Promise<IReport> => requests.post('user/isFollowing/', follow)
 };

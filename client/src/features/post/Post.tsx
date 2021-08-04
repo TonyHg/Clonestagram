@@ -54,24 +54,32 @@ function PostHeader(props: { avatar: string, onClick: () => void }) {
 function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void }) {
   const date = new Date(props.post.uploadDate)
   return (
-    <div className={styles.postContent}>
-      <div className={styles.postMedia}>
-        <img src={'http://localhost:2048/api/file/file/' + props.post.filename} alt="" />
-      </div>
-      <div className={styles.postDetails + " py-2 px-3"}>
-        <div className={"d-flex justify-content-between align-items-center"}>
-          <div className={"d-flex align-items-center mb-1"} onClick={props.onClick}>
-            <div className={styles.postDetailsUser}>
-              <img src={props.avatar} />
-            </div>
-            <div className={styles.postDetailsUserName}>{props.post.user.name}</div>
-          </div>
-          <div className={styles.postTime}>
-            posted on {date.toDateString()}
-          </div>
+    <div className={styles.postContentWrapper}>
+      <div className={styles.postContent}>
+        <div className={styles.postLike}>
+          <span>
+            200
+            <FontAwesomeIcon icon={fasHeart} color="white" />
+          </span>
         </div>
-        <div className={styles.postDescription}>
-          {props.post.description}
+        <div className={styles.postMedia}>
+          <img src={'http://localhost:2048/api/file/file/' + props.post.filename} alt="" />
+        </div>
+        <div className={styles.postDetails + " py-2 px-3"}>
+          <div className={"d-flex justify-content-between align-items-center"}>
+            <div className={"d-flex align-items-center mb-1"} onClick={props.onClick}>
+              <div className={styles.postDetailsUser}>
+                <img src={props.avatar} />
+              </div>
+              <div className={styles.postDetailsUserName}>{props.post.user.name}</div>
+            </div>
+            <div className={styles.postTime}>
+              posted on {date.toDateString()}
+            </div>
+          </div>
+          <div className={styles.postDescription}>
+            {props.post.description}
+          </div>
         </div>
       </div>
     </div>

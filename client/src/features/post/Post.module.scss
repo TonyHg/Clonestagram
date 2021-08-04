@@ -3,47 +3,65 @@
 .post {
 }
 
-.postContent {
-  min-width: 450px;
-  width: 450px;
-  max-width: 450px;
-  border-radius: 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
-  overflow-y: hidden;
-
-  .postMedia {
-    height: 450px;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+.postContentWrapper {
+  position: relative;
+  .postContent {
+    min-width: 450px;
+    width: 450px;
+    max-width: 450px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    overflow-y: hidden;
+    
+    .postLike {
+      padding: 4px 6px;
+      border-radius: 10px;
+      background-image: linear-gradient(to right, #25aae1, #4481eb);
+      width: max-content;
+      display: flex;
+      color: white;
+      position: absolute;
+      right: 20px;
+      top: -16px;
+      svg {
+        margin-left: 6px;
+      }
     }
-  }
 
-  .postDetails {
-    .postDetailsUser {
-      width: 32px;
-      height: 32px;
-      margin-right: 12px;
+    .postMedia {
+      height: 450px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
 
-    .postDetailsUserName {
-      font-weight: bold;
+    .postDetails {
+      .postDetailsUser {
+        width: 32px;
+        height: 32px;
+        margin-right: 12px;
+      }
+
+      .postDetailsUserName {
+        font-weight: bold;
+      }
     }
-  }
 
-  .postTime {
-    text-transform: uppercase;
-    font-size: 12px;
-    color: #666;
-  }
+    .postTime {
+      text-transform: uppercase;
+      font-size: 12px;
+      color: #666;
+    }
 
-  .postDescription {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    .postDescription {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
 }
 

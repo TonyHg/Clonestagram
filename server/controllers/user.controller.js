@@ -2,8 +2,10 @@ const User = require("../models/user.model");
 const UserRepository = require("../repositories/user.repository");
 const PostRepository = require("../repositories/post.repository");
 const AvatarRepository = require("../repositories/avatar.repository");
+const FollowRepository = require("../repositories/follow.repository");
 
 const Avatar = require("../models/avatar.model");
+const Follow = require("../models/follow.model");
 
 exports.users = (req, res) => {
   res.send("Send all users");
@@ -118,6 +120,63 @@ exports.getAvatar = (req, res) => {
     .then((avatar) => {
       if (avatar) res.send({ status: true, message: avatar.filename });
       else res.send({ status: false, message: "Avatar not found" });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getFollowers = (req, res) => {
+  FollowRepository.getFollowers(req.params.id)
+    .then((data) => {
+      const followers = data.map((f) => f.follower);
+      req.send({ users: followers });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getFollowings = (req, res) => {
+  FollowRepository.getFollowings(req.params.id)
+    .then((data) => {
+      const followings = data.map((f) => f.user);
+      req.send({ users: followings });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.follow = (req, res) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_userId = new ObjectId(req.body.userId);
+  const o_followerId = new ObjectId(req.body.followerId);
+
+  const follow = new Follow({
+    user: o_userId,
+    follower: o_followerId,
+  });
+
+  follow.save((err) => {
+    if (err) {
+      res.send({ status: false, message: "Follow failed" });
+    } else {
+      res.send({ status: true, message: "Follow successful" });
+    }
+  });
+};
+
+exports.unfollow = (req, res) => {
+  FollowRepository.unfollow(req.body.userId, req.body.followerId)
+    .then((data) => {
+      res.send({ status: true, message: "Unfollow successful" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send({ status: false, message: "Unfollow failed" });
+    });
+};
+
+exports.isFollowing = (req, res) => {
+  FollowRepository.isFollowing(req.body.userId, req.body.followerId)
+    .then((data) => {
+      if (data) res.send({ status: true, message: "Is following" });
+      else res.send({ status: false, message: "Not following" });
     })
     .catch((err) => console.log(err));
 };

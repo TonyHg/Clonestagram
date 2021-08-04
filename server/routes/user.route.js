@@ -14,5 +14,10 @@ router.delete("/delete/:id", userController.delete);
 router.put("/update/:id", userController.update);
 router.post("/avatar", upload.single("file"), userController.setAvatar);
 router.get("/avatar/:id", userController.getAvatar);
+router.get("/followers/:id", userController.getFollowers);
+router.get("/followings/:id", userController.getFollowings);
+router.post("/follow", userController.follow);
+router.post("/unfollow", userController.unfollow);
+router.post("/isFollowing", userController.isFollowing);
 
 module.exports = router;

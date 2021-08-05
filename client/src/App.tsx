@@ -10,6 +10,7 @@ import { Profile } from './features/profile/Profile';
 import { Auth } from './features/auth/Auth';
 import { Messenger } from './features/messenger/Messenger';
 import { AddPost } from './features/addPost/AddPost';
+import { PostDrawer } from './features/postDrawer/PostDrawer';
 
 const renderView = (view: String) => {
   switch (view) {
@@ -26,7 +27,7 @@ function App() {
 
   return (
     <div className="App">
-      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view)} <AddPost /></div>}
+      {(auth === auths.DISCONNECTED && <Auth />) || <div className="h-100 w-100"><Navbar /> {renderView(view)} <AddPost /><PostDrawer /></div>}
     </div>
   )
 }

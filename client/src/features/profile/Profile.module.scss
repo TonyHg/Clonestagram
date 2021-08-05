@@ -78,6 +78,7 @@
   .portfolio {
     .portfolioItemWrapper {
       position: relative;
+      cursor: pointer;
       
       .portfolioItem {
         min-width: 230px;

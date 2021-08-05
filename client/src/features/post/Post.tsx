@@ -66,7 +66,7 @@ export function Post(props: { post: IPostWithUser }) {
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
       <PostHeader avatar={avatar} onClick={onClick} onLike={onLike} like={like} />
       <PostContent post={props.post} avatar={avatar} onClick={onClick} like={likeCount} />
-      <PostComments post={props.post} userId={userId} />
+      <PostComments postId={props.post._id} userId={userId} />
     </div>
   )
 }
@@ -121,7 +121,7 @@ function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () =
   )
 }
 
-function PostComments(props: { post: IPostWithUser, userId: string }) {
+export function PostComments(props: { postId: string, userId: string }) {
   const [comments, setComments] = useState<IPostCommentWithUser[]>([])
 
   const [comment, setComment] = useState("")
@@ -133,7 +133,7 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
   const onComment = () => {
     const postComment: IPostComment = {
       userId: props.userId,
-      postId: props.post._id,
+      postId: props.postId,
       comment: comment,
       uploadDate: new Date().toISOString()
     }
@@ -146,12 +146,17 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
   }
 
   const loadComments = () => {
-    PostRequest.getComments(props.post._id)
-      .then((data) => { if (data.status) setComments(data.comments) })
+    if (props.postId) {
+      PostRequest.getComments(props.postId)
+        .then((data) => { if (data.status) setComments(data.comments) })
+    }
   }
 
   useEffect(() => {
     loadComments()
+    return () => {
+      setComments([])
+    }
   }, [])
 
   return (

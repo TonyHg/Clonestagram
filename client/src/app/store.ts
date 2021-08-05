@@ -3,6 +3,7 @@ import counterReducer from '../features/counter/counterSlice';
 import appReducer from '../appSlice';
 import authReducer from '../features/auth/authSlice';
 import profileReducer from '../features/profile/profileSlice';
+import postReducer from '../features/postDrawer/postDrawerSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     app: appReducer,
     auth: authReducer,
     profile: profileReducer,
+    post: postReducer,
   },
 });
 

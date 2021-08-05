@@ -16,6 +16,7 @@ import styles from './Profile.module.scss';
 import btnStyles from '../styles/Button.module.scss';
 import { setAvatar } from '../../appSlice';
 import { PostRequest } from '../../api/post.api';
+import { select } from '../postDrawer/postDrawerSlice';
 
 export function Profile() {
   const initialState: IUserProfileInfo = { user: { _id: "", name: "", followers: 0, following: 0 }, posts: [] }
@@ -188,8 +189,14 @@ function PortfolioItem(props: { post: IPost }) {
     PostRequest.getLikes(props.post._id)
       .then((data) => { if (data.status) setLike(data.likes) })
   }, [])
+
+  const dispatch = useDispatch()
+  const onClick = () => {
+    dispatch(select(props.post._id))
+  }
+
   return (
-    <div className={styles.portfolioItemWrapper}>
+    <div className={styles.portfolioItemWrapper} onClick={onClick}>
       <div className={styles.portfolioItem + " mb-5"}>
         <div className={styles.portfolioItemLike}>
           <span>

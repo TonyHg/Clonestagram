@@ -50,3 +50,8 @@ exports.updateUserPassword = (id, password) => {
   const newValues = { $set: { salt: salt, hash: hash } };
   return users.updateOne(query, newValues);
 };
+
+exports.search = (filter) => {
+  const query = { name: { $regex: ".*" + filter + ".*", $options: "i" } };
+  return users.find(query).toArray();
+};

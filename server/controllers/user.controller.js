@@ -189,3 +189,14 @@ exports.isFollowing = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.search = (req, res) => {
+  UserRepository.search(req.params.query)
+    .then((data) => {
+      res.send({ status: true, message: "Search success", users: data });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send({ status: false, message: "Error during search" });
+    });
+};

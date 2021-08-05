@@ -19,5 +19,6 @@ router.get("/followings/:id", userController.getFollowings);
 router.post("/follow", userController.follow);
 router.post("/unfollow", userController.unfollow);
 router.post("/isFollowing", userController.isFollowing);
+router.get("/search/:query", userController.search);
 
 module.exports = router;

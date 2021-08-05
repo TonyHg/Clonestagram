@@ -40,6 +40,18 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+exports.getPost = (req, res) => {
+  PostRepository.getPost(req.params.id)
+    .then((data) => {
+      if (data) res.send({ status: true, message: "post found", post: data });
+      else res.send({ status: false, message: "post not found" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send({ status: false, message: "error while getting post" });
+    });
+};
+
 exports.getLikes = (req, res) => {
   LikeRepository.getLikes(req.params.id)
     .then((data) => {

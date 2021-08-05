@@ -7,6 +7,7 @@ const postController = require("../controllers/post.controller");
 
 router.post("/create", upload.single("file"), postController.create);
 router.get("/getAll", postController.getAll);
+router.get("/:id", postController.getPost);
 router.get("/like/:id", postController.getLikes);
 router.post("/isLiked", postController.getLike);
 router.post("/like", postController.like);

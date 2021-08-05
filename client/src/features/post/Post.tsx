@@ -12,6 +12,7 @@ import { setUser } from '../profile/profileSlice';
 import { faHeart as fasHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { RootState } from '../../app/store';
 import { PostRequest } from '../../api/post.api';
+import { select } from '../postDrawer/postDrawerSlice';
 
 export function Post(props: { post: IPostWithUser }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
@@ -26,7 +27,11 @@ export function Post(props: { post: IPostWithUser }) {
       })
   }, [])
 
-  const onClick = () => { dispatch(setUser(props.post.user._id)); dispatch(switchView(views.PROFILE)) }
+  const onClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
+    dispatch(setUser(props.post.user._id))
+    dispatch(switchView(views.PROFILE))
+  }
 
   const postUser: IPostUser = { userId: userId, postId: props.post._id }
   const refresh = () => { }
@@ -66,12 +71,12 @@ export function Post(props: { post: IPostWithUser }) {
     <div className={styles.post + " mt-3 mb-5 d-flex"}>
       <PostHeader avatar={avatar} onClick={onClick} onLike={onLike} like={like} />
       <PostContent post={props.post} avatar={avatar} onClick={onClick} like={likeCount} />
-      <PostComments post={props.post} userId={userId} />
+      <PostComments postId={props.post._id} userId={userId} />
     </div>
   )
 }
 
-function PostHeader(props: { avatar: string, onClick: () => void, onLike: () => void, like: boolean }) {
+function PostHeader(props: { avatar: string, onClick: (e: React.MouseEvent<HTMLElement>) => void, onLike: () => void, like: boolean }) {
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
       <div className={styles.postUser} onClick={props.onClick}>
@@ -86,10 +91,12 @@ function PostHeader(props: { avatar: string, onClick: () => void, onLike: () => 
   )
 }
 
-function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void, like: number }) {
+function PostContent(props: { post: IPostWithUser, avatar: string, onClick: (e: React.MouseEvent<HTMLElement>) => void, like: number }) {
   const date = new Date(props.post.uploadDate)
+  const dispatch = useDispatch()
+  const onDrawer = () => dispatch(select(props.post._id))
   return (
-    <div className={styles.postContentWrapper}>
+    <div className={styles.postContentWrapper} onClick={onDrawer}>
       <div className={styles.postContent}>
         <div className={styles.postLike}>
           <span>
@@ -121,7 +128,7 @@ function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () =
   )
 }
 
-function PostComments(props: { post: IPostWithUser, userId: string }) {
+export function PostComments(props: { postId: string, userId: string }) {
   const [comments, setComments] = useState<IPostCommentWithUser[]>([])
 
   const [comment, setComment] = useState("")
@@ -133,7 +140,7 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
   const onComment = () => {
     const postComment: IPostComment = {
       userId: props.userId,
-      postId: props.post._id,
+      postId: props.postId,
       comment: comment,
       uploadDate: new Date().toISOString()
     }
@@ -146,12 +153,17 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
   }
 
   const loadComments = () => {
-    PostRequest.getComments(props.post._id)
-      .then((data) => { if (data.status) setComments(data.comments) })
+    if (props.postId) {
+      PostRequest.getComments(props.postId)
+        .then((data) => { if (data.status) setComments(data.comments) })
+    }
   }
 
   useEffect(() => {
     loadComments()
+    return () => {
+      setComments([])
+    }
   }, [])
 
   return (

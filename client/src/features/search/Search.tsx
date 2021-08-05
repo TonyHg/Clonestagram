@@ -36,15 +36,18 @@ export function Search() {
     return () => clearTimeout(delayDebounceFn)
   }, [query])
 
+  const [focused, setFocused] = useState(false)
+  const onFocus = () => setFocused(true)
+  const onBlur = () => setFocused(false)
   return (
     <div className={styles.search}>
       <div className={inputStyles.inputWrapper + " mb-0"}>
-        <input className={inputStyles.inputText} type="text" placeholder="Search..." value={query} onChange={onChange} style={{ height: "34px" }} />
+        <input className={inputStyles.inputText} type="text" placeholder="Search..." value={query} onChange={onChange} style={{ height: "34px" }} onFocus={onFocus} onBlur={onBlur} />
         <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faSearch} />
         </span>
       </div>
-      {results.length !== 0 &&
+      {results.length !== 0 && focused &&
         <div className={styles.searchResults}>
           {results.map((user) => <SearchItem key={user._id} user={user} />)}
         </div>

@@ -156,7 +156,9 @@ function PostComments(props: { post: IPostWithUser, userId: string }) {
 
   return (
     <div className={styles.postComments}>
-      {comments.map(c => <PostComment key={c._id} comment={c} userId={props.userId} loadComments={loadComments} />)}
+      <div className={styles.postCommentsWrapper}>
+        {comments.map(c => <PostComment key={c._id} comment={c} userId={props.userId} loadComments={loadComments} />)}
+      </div>
       <form className={styles.postInput + " d-flex align-items-center justify-content-between"}>
         <input type="text" placeholder="Write a comment" value={comment} onChange={onChange} className={styles.postInputText} />
         <FontAwesomeIcon icon={faPaperPlane} onClick={onComment} />

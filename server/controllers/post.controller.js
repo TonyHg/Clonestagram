@@ -93,7 +93,6 @@ exports.unlike = (req, res) => {
 exports.getComments = (req, res) => {
   CommentRepository.getComments(req.params.id)
     .then((data) => {
-      console.log(data);
       res.send({ status: true, comments: data });
     })
     .catch((err) => {

@@ -95,48 +95,54 @@
   min-width: 300px;
   padding: 10px 12px;
   border-radius: 15px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 15px 40px -12px, rgba(0, 0, 0, 0.3) 0px 9px 18px -18px;
 }
 
-.postComment {
-  .postCommentHeader {
-    .postCommentHeaderUser {
-      .postCommentHeaderUserImg {
-        width: 32px;
-        height: 32px;
-        margin-right: 12px;
-      }
+.postCommentsWrapper {
+  height: 478px;
+  overflow: auto;
+  padding: 4px 15px;
+  .postComment {
+    .postCommentHeader {
+      .postCommentHeaderUser {
+        .postCommentHeaderUserImg {
+          width: 32px;
+          height: 32px;
+          margin-right: 12px;
+        }
 
-      .postCommentHeaderUserName {
-        font-weight: bold;
-        font-size: 14px;
+        .postCommentHeaderUserName {
+          font-weight: bold;
+          font-size: 14px;
+        }
       }
+      
+      .postCommentHeaderTime {
+        font-size: 12px;
+        text-transform: uppercase;
+        color:rgb(149, 157, 165);
+
+        .postCommentHeaderDelete {
+          cursor:pointer;
+          color:lightcoral;
+        }
+      }
+    }
+
+    .postCommentText {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
     
-    .postCommentHeaderTime {
-      font-size: 12px;
-      text-transform: uppercase;
-      color:rgb(149, 157, 165);
-
-      .postCommentHeaderDelete {
-        cursor:pointer;
-        color:lightcoral;
-      }
-    }
+    margin-bottom: 20px;
   }
-
-  .postCommentText {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-  
-  margin-bottom: 20px;
 }
 
 .postInput {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
   .postInputText {
     width: 480px;
     margin-right: 10px;

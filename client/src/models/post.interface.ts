@@ -50,3 +50,7 @@ export interface IPostCommentWithUser {
 export interface IPostComments extends IReport {
   comments: IPostCommentWithUser[]
 }
+
+export interface IPostStatus extends IReport {
+  post: IPostWithUser
+}

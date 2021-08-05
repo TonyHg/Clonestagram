@@ -1,5 +1,5 @@
 import { requests } from './api';
-import { IFeedPosts, IPost, IPostComment, IPostComments, IPostLikes, IPostUser } from '../models/post.interface';
+import { IFeedPosts, IPost, IPostComment, IPostComments, IPostStatus, IPostLikes, IPostUser } from '../models/post.interface';
 import { IReport } from '../models/report.interface';
 
 export const PostRequest = {
@@ -13,6 +13,7 @@ export const PostRequest = {
     return requests.postFile('post/create', formData)
   },
   getPosts: (): Promise<IFeedPosts> => requests.get('post/getAll'),
+  getPost: (id: string): Promise<IPostStatus> => requests.get('post/' + id),
   getLikes: (id: string): Promise<IPostLikes> => requests.get('post/like/' + id),
   isLiked: (postUser: IPostUser): Promise<IReport> => requests.post('post/isLiked', postUser),
   like: (postUser: IPostUser): Promise<IReport> => requests.post('post/like', postUser),

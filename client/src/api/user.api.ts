@@ -1,7 +1,6 @@
 import { requests } from './api';
-import { IFollow, IUser, IUserAvatar, IUserProfileInfo, IUserToken, IUserUpdate } from '../models/user.interface';
+import { IFollow, ISearch, IUser, IUserAvatar, IUserProfileInfo, IUserToken, IUserUpdate } from '../models/user.interface';
 import { IReport } from '../models/report.interface';
-import { request } from 'http';
 
 export const UserRequest = {
   getUsers: (): Promise<IUser[]> => requests.get('user/users'),
@@ -22,5 +21,6 @@ export const UserRequest = {
   getAvatar: (id: string): Promise<IReport> => requests.get('user/avatar/' + id),
   follow: (follow: IFollow): Promise<IReport> => requests.post('user/follow/', follow),
   unfollow: (follow: IFollow): Promise<IReport> => requests.post('user/unfollow/', follow),
-  isFollowing: (follow: IFollow): Promise<IReport> => requests.post('user/isFollowing/', follow)
+  isFollowing: (follow: IFollow): Promise<IReport> => requests.post('user/isFollowing/', follow),
+  search: (query: string): Promise<ISearch> => requests.get('user/search/' + query),
 };

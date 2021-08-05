@@ -1,4 +1,5 @@
 import { IPost } from "./post.interface";
+import { IReport } from "./report.interface";
 
 export interface IUser {
   name: string;
@@ -39,4 +40,8 @@ export interface IUserAvatar {
 export interface IFollow {
   userId: string,
   followerId: string,
+}
+
+export interface ISearch extends IReport {
+  users: IUserPublic[]
 }

@@ -12,6 +12,7 @@ import { setUser } from '../profile/profileSlice';
 import { faHeart as fasHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { RootState } from '../../app/store';
 import { PostRequest } from '../../api/post.api';
+import { select } from '../postDrawer/postDrawerSlice';
 
 export function Post(props: { post: IPostWithUser }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
@@ -26,7 +27,11 @@ export function Post(props: { post: IPostWithUser }) {
       })
   }, [])
 
-  const onClick = () => { dispatch(setUser(props.post.user._id)); dispatch(switchView(views.PROFILE)) }
+  const onClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
+    dispatch(setUser(props.post.user._id))
+    dispatch(switchView(views.PROFILE))
+  }
 
   const postUser: IPostUser = { userId: userId, postId: props.post._id }
   const refresh = () => { }
@@ -71,7 +76,7 @@ export function Post(props: { post: IPostWithUser }) {
   )
 }
 
-function PostHeader(props: { avatar: string, onClick: () => void, onLike: () => void, like: boolean }) {
+function PostHeader(props: { avatar: string, onClick: (e: React.MouseEvent<HTMLElement>) => void, onLike: () => void, like: boolean }) {
   return (
     <div className={styles.postHeader + " d-flex flex-column justify-content-between mx-3"}>
       <div className={styles.postUser} onClick={props.onClick}>
@@ -86,10 +91,12 @@ function PostHeader(props: { avatar: string, onClick: () => void, onLike: () => 
   )
 }
 
-function PostContent(props: { post: IPostWithUser, avatar: string, onClick: () => void, like: number }) {
+function PostContent(props: { post: IPostWithUser, avatar: string, onClick: (e: React.MouseEvent<HTMLElement>) => void, like: number }) {
   const date = new Date(props.post.uploadDate)
+  const dispatch = useDispatch()
+  const onDrawer = () => dispatch(select(props.post._id))
   return (
-    <div className={styles.postContentWrapper}>
+    <div className={styles.postContentWrapper} onClick={onDrawer}>
       <div className={styles.postContent}>
         <div className={styles.postLike}>
           <span>

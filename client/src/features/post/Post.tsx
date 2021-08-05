@@ -166,12 +166,17 @@ export function PostComments(props: { postId: string, userId: string }) {
     }
   }, [])
 
+  const onSubmit = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault()
+    onComment()
+  }
+
   return (
     <div className={styles.postComments}>
       <div className={styles.postCommentsWrapper}>
         {comments.map(c => <PostComment key={c._id} comment={c} userId={props.userId} loadComments={loadComments} />)}
       </div>
-      <form className={styles.postInput + " d-flex align-items-center justify-content-between"}>
+      <form onSubmit={onSubmit} className={styles.postInput + " d-flex align-items-center justify-content-between"}>
         <input type="text" placeholder="Write a comment" value={comment} onChange={onChange} className={styles.postInputText} />
         <FontAwesomeIcon icon={faPaperPlane} onClick={onComment} />
       </form>

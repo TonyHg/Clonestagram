@@ -8,6 +8,9 @@ import inputStyles from '../styles/Input.module.scss';
 import { useEffect, useState } from 'react';
 import { IUserPublic } from '../../models/user.interface';
 import { UserRequest } from '../../api/user.api';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../profile/profileSlice';
+import { switchView, views } from '../../appSlice';
 
 export function Search() {
   const [query, setQuery] = useState("")
@@ -37,26 +40,25 @@ export function Search() {
   }, [query])
 
   const [focused, setFocused] = useState(false)
-  const onFocus = () => setFocused(true)
-  const onBlur = () => setFocused(false)
+  const [resultFocus, setResultFocus] = useState(false)
   return (
     <div className={styles.search}>
       <div className={inputStyles.inputWrapper + " mb-0"}>
-        <input className={inputStyles.inputText} type="text" placeholder="Search..." value={query} onChange={onChange} style={{ height: "34px" }} onFocus={onFocus} onBlur={onBlur} />
+        <input className={inputStyles.inputText} type="text" placeholder="Search..." value={query} onChange={onChange} style={{ height: "34px" }} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
         <span className={inputStyles.inputIcon}>
           <FontAwesomeIcon icon={faSearch} />
         </span>
       </div>
-      {results.length !== 0 && focused &&
+      {results.length !== 0 && (focused || resultFocus) &&
         <div className={styles.searchResults}>
-          {results.map((user) => <SearchItem key={user._id} user={user} />)}
+          {results.map((user) => <SearchItem key={user._id} user={user} onFocus={() => setResultFocus(true)} onBlur={() => setResultFocus(false)} />)}
         </div>
       }
     </div>
   )
 }
 
-function SearchItem(props: { user: IUserPublic }) {
+function SearchItem(props: { user: IUserPublic, onFocus: () => void, onBlur: () => void }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
   useEffect(() => {
     UserRequest.getAvatar(props.user._id)
@@ -69,14 +71,19 @@ function SearchItem(props: { user: IUserPublic }) {
   const [selected, setSelected] = useState(false)
   const onMouveOver = () => {
     setSelected(true)
+    props.onFocus()
   }
 
   const onMouseLeave = () => {
     setSelected(false)
+    props.onBlur()
   }
 
+  const dispatch = useDispatch()
+  const onClick = () => { dispatch(setUser(props.user._id)); dispatch(switchView(views.PROFILE)) }
+
   return (
-    <div className={styles.searchItem + ` d-flex align-items-center ${selected ? styles.searchItemSelected : ""}`} onMouseOver={onMouveOver} onMouseLeave={onMouseLeave}>
+    <div className={styles.searchItem + ` d-flex align-items-center ${selected ? styles.searchItemSelected : ""}`} onClick={onClick} onMouseOver={onMouveOver} onMouseLeave={onMouseLeave}>
       <div className={styles.searchItemIcon}>
         <img src={avatar} />
       </div>

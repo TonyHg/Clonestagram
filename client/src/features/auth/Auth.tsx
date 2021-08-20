@@ -1,6 +1,7 @@
 import styles from './Auth.module.scss';
 import btnStyles from '../styles/Button.module.scss';
 import inputStyles from '../styles/Input.module.scss';
+import fontStyles from '../styles/Font.module.scss';
 import { connect } from '../auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,7 +13,7 @@ import { setAvatar } from '../../appSlice';
 export function Auth() {
   return (
     <div className={styles.auth + " d-flex flex-column justify-content-center align-items-center"}>
-      <div className={styles.authBrandName + " mb-5"}>
+      <div className={styles.authBrandName + " mb-5 " + fontStyles.brand}>
         Clonestagram
       </div>
       <div className={styles.authMethodWrapper + " row justify-content-center"}>

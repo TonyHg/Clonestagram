@@ -5,6 +5,7 @@ import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faSlidersH, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Navbar.module.scss';
+import fontStyles from '../styles/Font.module.scss';
 
 import { Search } from '../search/Search';
 
@@ -25,7 +26,7 @@ export function Navbar() {
 
   return (
     <div className={styles.navbar + " d-flex"}>
-      <div className={styles.navbarName} onClick={() => dispatch(switchView(views.FEED))}>
+      <div className={styles.navbarName + " " + fontStyles.brand} onClick={() => dispatch(switchView(views.FEED))}>
         Clonestagram
         <Settings drawer={drawer} onClose={onClose} />
       </div>

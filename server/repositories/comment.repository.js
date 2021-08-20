@@ -18,3 +18,11 @@ exports.deleteComment = (commentId) => {
   const query = { _id: o_id };
   return comments.deleteOne(query);
 };
+
+exports.deleteUserComments = (id) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_id = new ObjectId(id);
+
+  const query = { user: o_id };
+  return comments.deleteMany(query);
+};

@@ -27,3 +27,11 @@ exports.unlike = (userId, postId) => {
   const query = { user: o_userId, post: o_postId };
   return likes.deleteOne(query);
 };
+
+exports.deleteUserLikes = (id) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_id = new ObjectId(id);
+
+  const query = { user: o_id };
+  return likes.deleteMany(query);
+};

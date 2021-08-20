@@ -4,6 +4,10 @@ const crypto = require("crypto");
 
 const users = db.collection("users");
 
+exports.getAll = () => {
+  return users.find().toArray();
+};
+
 exports.getUserByEmail = (email) => {
   const query = { email: email };
   const user = users.findOne(query);

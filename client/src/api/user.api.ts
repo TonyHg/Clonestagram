@@ -22,5 +22,6 @@ export const UserRequest = {
   follow: (follow: IFollow): Promise<IReport> => requests.post('user/follow/', follow),
   unfollow: (follow: IFollow): Promise<IReport> => requests.post('user/unfollow/', follow),
   isFollowing: (follow: IFollow): Promise<IReport> => requests.post('user/isFollowing/', follow),
+  getSuggestion: (id: string): Promise<ISearch> => requests.get('user/suggestion/' + id),
   search: (query: string): Promise<ISearch> => requests.get('user/search/' + query),
 };

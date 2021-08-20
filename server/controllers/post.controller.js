@@ -7,6 +7,8 @@ const LikeRepository = require("../repositories/like.repository");
 const Comment = require("../models/comment.model");
 const CommentRepository = require("../repositories/comment.repository");
 
+const FollowRepository = require("../repositories/follow.repository");
+
 exports.create = (req, res, next) => {
   console.log(req.file);
   console.log(req.body);
@@ -50,6 +52,25 @@ exports.getPost = (req, res) => {
       console.log(err);
       res.send({ status: false, message: "error while getting post" });
     });
+};
+
+exports.getFeed = async (req, res) => {
+  try {
+    const followings = (
+      await FollowRepository.getFollowings(req.params.id)
+    ).map((f) => f.user.toString());
+    followings.push(req.params.id);
+    var feed = [];
+    for (const f of followings) {
+      const posts = await PostRepository.getUserPosts(f);
+      feed = feed.concat(posts);
+    }
+    feed.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+    res.send({ status: true, message: "feed found", posts: feed });
+  } catch (err) {
+    console.log(err);
+    res.send({ status: false, message: "error while getting feed" });
+  }
 };
 
 exports.getLikes = (req, res) => {

@@ -27,7 +27,6 @@ exports.user = (req, res) => {
                 },
                 posts: posts,
               };
-              console.log(userProfile);
               res.send(userProfile);
             });
           });

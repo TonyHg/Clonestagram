@@ -35,3 +35,14 @@ exports.isFollowing = (userId, followerId) => {
   const query = { user: o_userId, follower: o_followerId };
   return follows.findOne(query);
 };
+
+exports.deleteUserFollows = (id) => {
+  const ObjectId = require("mongodb").ObjectId;
+  const o_id = new ObjectId(id);
+
+  const queryUser = { user: o_id };
+  const queryFollower = { follower: o_id };
+
+  follows.deleteMany(queryUser);
+  return follows.deleteMany(queryFollower);
+};

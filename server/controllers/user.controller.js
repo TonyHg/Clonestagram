@@ -3,6 +3,8 @@ const UserRepository = require("../repositories/user.repository");
 const PostRepository = require("../repositories/post.repository");
 const AvatarRepository = require("../repositories/avatar.repository");
 const FollowRepository = require("../repositories/follow.repository");
+const LikeRepository = require("../repositories/like.repository");
+const CommentRepository = require("../repositories/comment.repository");
 
 const Avatar = require("../models/avatar.model");
 const Follow = require("../models/follow.model");
@@ -74,16 +76,18 @@ exports.login = (req, res, next) => {
     .catch((err) => res.status(401).send("wrong email/password"));
 };
 
-exports.delete = (req, res, next) => {
-  PostRepository.deleteUserPosts(req.params.id)
-    .then((ret) => {
-      UserRepository.deleteUser(req.params.id)
-        .then((data) => {
-          res.send({ status: true, message: "Account deleted" });
-        })
-        .catch((err) => console.log(err));
-    })
-    .catch((err) => console.log(err));
+exports.delete = async (req, res, next) => {
+  try {
+    await LikeRepository.deleteUserLikes(req.params.id);
+    await FollowRepository.deleteUserFollows(req.params.id);
+    await CommentRepository.deleteUserComments(req.params.id);
+    await PostRepository.deleteUserPosts(req.params.id);
+    await UserRepository.deleteUser(req.params.id);
+    res.send({ status: true, message: "Account deleted" });
+  } catch (err) {
+    console.log(err);
+    res.send({ status: false, message: "Error while deleting account" });
+  }
 };
 
 exports.update = (req, res, next) => {

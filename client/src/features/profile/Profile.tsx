@@ -131,7 +131,7 @@ function UserInfoStat({ icon, val, name }: UserInfoStatProp) {
   )
 }
 
-function UserActions(props: { userId: string, profileId: string, isDisabled: boolean }) {
+export function UserActions(props: { userId: string, profileId: string, isDisabled: boolean }) {
   const [follow, setFollow] = useState(false)
   const userFollow = { userId: props.profileId, followerId: props.userId }
 
@@ -165,7 +165,7 @@ function UserActions(props: { userId: string, profileId: string, isDisabled: boo
 
   return (
     <div className={styles.userInfoActions + " d-flex flex-column"}>
-      <button className={btnStyles.btnHover + " mb-2 mt-5 d-flex " + btnStyles.submitButton} disabled={props.isDisabled} onClick={onClick}>
+      <button className={btnStyles.btnHover + " mb-2 mt-3 d-flex " + btnStyles.submitButton} disabled={props.isDisabled} onClick={onClick}>
         <span className="m-auto">{follow ? "Unfollow" : "Follow"}</span>
       </button>
       <div className={btnStyles.btnHover + " mb-2 mt-2 d-flex " + btnStyles.secondaryButton}>

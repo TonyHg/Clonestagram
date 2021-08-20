@@ -1,5 +1,5 @@
 import react, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostRequest } from '../../api/post.api';
 import { UserRequest } from '../../api/user.api';
 import { RootState } from '../../app/store';
@@ -11,6 +11,8 @@ import { Post } from '../post/Post';
 
 import styles from './Feed.module.scss';
 import { UserActions } from '../profile/Profile';
+import { setUser } from '../profile/profileSlice';
+import { switchView, views } from '../../appSlice';
 
 export function Feed() {
   const initialState: IPostWithUser[] = []
@@ -71,9 +73,17 @@ function UserSuggestion(props: { user: IUserPublic, userId: string }) {
         .catch((err) => { })
     }
   }, [])
+
+  const dispatch = useDispatch()
+
+  const onClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
+    dispatch(setUser(props.user._id))
+    dispatch(switchView(views.PROFILE))
+  }
   return (
     <div className={styles.userSuggestion + " d-flex flex-column justify-content-center align-items-center"}>
-      <div className={styles.userSuggestionAvatar}>
+      <div className={styles.userSuggestionAvatar} onClick={onClick}>
         <img src={avatar} />
       </div>
       <div className={styles.userSuggestionName}>

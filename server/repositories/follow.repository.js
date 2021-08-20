@@ -31,6 +31,7 @@ exports.isFollowing = (userId, followerId) => {
   const ObjectId = require("mongodb").ObjectId;
   const o_userId = new ObjectId(userId);
   const o_followerId = new ObjectId(followerId);
+  if (o_userId === o_followerId) return undefined;
 
   const query = { user: o_userId, follower: o_followerId };
   return follows.findOne(query);

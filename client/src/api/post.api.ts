@@ -12,6 +12,7 @@ export const PostRequest = {
     formData.append("filename", post.filename)
     return requests.postFile('post/create', formData)
   },
+  getFeed: (id: string): Promise<IFeedPosts> => requests.get('post/feed/' + id),
   getPosts: (): Promise<IFeedPosts> => requests.get('post/getAll'),
   getPost: (id: string): Promise<IPostStatus> => requests.get('post/' + id),
   getLikes: (id: string): Promise<IPostLikes> => requests.get('post/like/' + id),

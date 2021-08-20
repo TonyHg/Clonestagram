@@ -29,7 +29,6 @@ exports.user = (req, res) => {
                 },
                 posts: posts,
               };
-              console.log(userProfile);
               res.send(userProfile);
             });
           });
@@ -71,6 +70,8 @@ exports.login = (req, res, next) => {
         } else {
           res.status(401).send("wrong email/password");
         }
+      } else {
+        res.status(401).send("wrong email/password");
       }
     })
     .catch((err) => res.status(401).send("wrong email/password"));
@@ -194,10 +195,42 @@ exports.isFollowing = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+exports.getSuggestion = async (req, res) => {
+  try {
+    const users = await UserRepository.getAll();
+    const suggestion = [];
+    for (const user of users) {
+      if (user._id == req.params.id) continue;
+      const isFollowing = await FollowRepository.isFollowing(
+        user._id,
+        req.params.id
+      );
+      if (!isFollowing) {
+        suggestion.push({ _id: user._id, name: user.name });
+      }
+    }
+    res.send({
+      status: true,
+      message: "Suggestion",
+      users: suggestion,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({ status: false, message: "Suggestion failed" });
+  }
+};
+
 exports.search = (req, res) => {
   UserRepository.search(req.params.query)
     .then((data) => {
-      res.send({ status: true, message: "Search success", users: data });
+      if (data) {
+        const users = data.map((user) => {
+          return { _id: user._id, name: user.name };
+        });
+        res.send({ status: true, message: "Search success", users: users });
+      } else {
+        res.send({ status: true, message: "Search success", users: [] });
+      }
     })
     .catch((err) => {
       console.log(err);

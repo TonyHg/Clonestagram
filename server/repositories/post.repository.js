@@ -21,7 +21,7 @@ exports.getUserPosts = (id) => {
   const o_id = new ObjectId(id);
 
   const query = { user: o_id };
-  return posts.find(query).toArray();
+  return Post.find(query).populate("user");
 };
 
 exports.deleteUserPosts = (id) => {

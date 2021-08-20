@@ -52,4 +52,11 @@ UserSchema.methods.toAuthJSON = function (id) {
   };
 };
 
+UserSchema.methods.public = function () {
+  return {
+    _id: id,
+    name: this.name,
+  };
+};
+
 module.exports = mongoose.model("User", UserSchema);

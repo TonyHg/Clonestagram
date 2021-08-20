@@ -18,7 +18,7 @@ export function Feed() {
   const initialState: IPostWithUser[] = []
   const [posts, setPosts] = useState(initialState)
   const userId = useSelector((state: RootState) => state.auth.token?._id)
-  useEffect(() => {
+  const loadPosts = () => {
     if (userId) {
       PostRequest.getFeed(userId)
         .then((data) => {
@@ -27,18 +27,23 @@ export function Feed() {
         })
         .catch((err) => console.error(err))
     }
+  }
+
+  useEffect(() => {
+    loadPosts()
   }, [userId])
+
   return (
     <div className={styles.feed + " d-flex flex-column align-items-center"}>
       {posts && posts.map((post, idx) => {
         return <Post key={idx} post={post} />
       })}
-      {userId && <Suggestion userId={userId!} />}
+      {userId && <Suggestion userId={userId!} loadPosts={loadPosts} />}
     </div>
   )
 }
 
-function Suggestion(props: { userId: string }) {
+function Suggestion(props: { userId: string, loadPosts: () => void }) {
   const [users, setUsers] = useState<IUserPublic[]>([])
   useEffect(() => {
     UserRequest.getSuggestion(props.userId)
@@ -55,13 +60,13 @@ function Suggestion(props: { userId: string }) {
         Find other users of Clonestagram!
       </span>
       <div className={styles.suggestion + " d-flex justify-content-center"}>
-        {users && users.map((u) => <UserSuggestion key={u._id} user={u} userId={props.userId} />)}
+        {users && users.map((u) => <UserSuggestion key={u._id} user={u} userId={props.userId} loadPosts={props.loadPosts} />)}
       </div>
     </div>
   )
 }
 
-function UserSuggestion(props: { user: IUserPublic, userId: string }) {
+function UserSuggestion(props: { user: IUserPublic, userId: string, loadPosts: () => void }) {
   const [avatar, setAvatar] = useState(emptyAvatar)
   useEffect(() => {
     if (props.user._id) {
@@ -89,7 +94,7 @@ function UserSuggestion(props: { user: IUserPublic, userId: string }) {
       <div className={styles.userSuggestionName}>
         {props.user.name}
       </div>
-      <UserActions userId={props.userId} profileId={props.user._id} isDisabled={false} />
+      <UserActions userId={props.userId} profileId={props.user._id} isDisabled={false} callback={props.loadPosts} />
     </div>
   )
 }

@@ -20,7 +20,6 @@ exports.getUserById = (id) => {
 
   const query = { _id: o_id };
   const user = users.findOne(query);
-  console.log(user);
   return user;
 };
 

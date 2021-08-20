@@ -68,6 +68,8 @@ exports.login = (req, res, next) => {
         } else {
           res.status(401).send("wrong email/password");
         }
+      } else {
+        res.status(401).send("wrong email/password");
       }
     })
     .catch((err) => res.status(401).send("wrong email/password"));

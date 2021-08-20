@@ -110,7 +110,7 @@ function UserInfo(props: { user: IUserProfileInfo, profileId: string }) {
       <UserInfoStat icon={faUser} val={props.user.user.followers} name="Followers" />
       <UserInfoStat icon={faUsers} val={props.user.user.following} name="Following" />
       <UserInfoStat icon={faImage} val={props.user.posts.length} name="Post" />
-      <UserActions userId={userId} profileId={props.profileId} isDisabled={isUser} />
+      <UserActions userId={userId} profileId={props.profileId} isDisabled={isUser} callback={() => { }} />
     </div>
   )
 }
@@ -131,7 +131,7 @@ function UserInfoStat({ icon, val, name }: UserInfoStatProp) {
   )
 }
 
-export function UserActions(props: { userId: string, profileId: string, isDisabled: boolean }) {
+export function UserActions(props: { userId: string, profileId: string, isDisabled: boolean, callback: () => void }) {
   const [follow, setFollow] = useState(false)
   const userFollow = { userId: props.profileId, followerId: props.userId }
 
@@ -140,13 +140,19 @@ export function UserActions(props: { userId: string, profileId: string, isDisabl
       UserRequest.unfollow(userFollow)
         .then((data) => {
           console.log(data);
-          if (data.status) setFollow(false)
+          if (data.status) {
+            setFollow(false)
+            props.callback()
+          }
         })
     } else {
       UserRequest.follow(userFollow)
         .then((data) => {
           console.log(data);
-          if (data.status) setFollow(true)
+          if (data.status) {
+            setFollow(true)
+            props.callback()
+          }
         })
     }
   }

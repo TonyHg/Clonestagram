@@ -19,7 +19,7 @@ export interface IPostWithUser {
   uploadDate: string,
 }
 
-export interface IFeedPosts {
+export interface IFeedPosts extends IReport {
   posts: IPostWithUser[]
 }
 

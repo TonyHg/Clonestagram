@@ -20,11 +20,15 @@ export function Post(props: { post: IPostWithUser }) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    UserRequest.getAvatar(props.post.user._id)
-      .then((data) => {
-        if (data.status)
-          setAvatar('http://localhost:2048/api/file/file/' + data.message)
-      })
+    console.log(props.post)
+    if (props.post.user._id) {
+      UserRequest.getAvatar(props.post.user._id)
+        .then((data) => {
+          if (data.status)
+            setAvatar('http://localhost:2048/api/file/file/' + data.message)
+        })
+        .catch((err) => { })
+    }
   }, [])
 
   const onClick = (e: React.MouseEvent<HTMLElement>) => {

@@ -1,6 +1,10 @@
 import styles from './Messenger.module.scss';
 import btnStyles from '../styles/Button.module.scss';
 import testIcon from '../../assets/img/image 2.png';
+import { useState } from 'react';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import emptyAvatar from '../../assets/img/image 2.png';
 
 export function Messenger() {
   return (
@@ -47,9 +51,53 @@ function MessengerPreview({ isSelected }: { isSelected: Boolean }) {
 }
 
 function MessengerChat() {
+  const [message, setMessage] = useState("")
+
+  const onChange = (e: React.FormEvent<EventTarget>) => {
+    let target = e.target as HTMLInputElement;
+    setMessage(target.value)
+  }
+
+  const onMessage = () => {
+    setMessage("")
+  }
+
+  const onSubmit = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault()
+    onMessage()
+  }
+
   return (
     <div className={styles.messengerChat + " col-7"}>
-      chat
+      <div className={styles.chatsWrapper}>
+        <Chat isUser={false} />
+        <Chat isUser={true} />
+        <Chat isUser={false} />
+        <Chat isUser={false} />
+        <Chat isUser={false} />
+        <Chat isUser={true} />
+        <Chat isUser={true} />
+        <Chat isUser={true} />
+        <Chat isUser={false} />
+        <Chat isUser={true} />
+      </div>
+      <form onSubmit={onSubmit} className={styles.chatInput + " d-flex align-items-center justify-content-between"}>
+        <input type="text" placeholder="Write a message" value={message} onChange={onChange} className={styles.chatInputText} />
+        <FontAwesomeIcon icon={faPaperPlane} onClick={onMessage} />
+      </form>
+    </div>
+  )
+}
+
+function Chat(props: { isUser: boolean }) {
+  return (
+    <div className={styles.chat + " d-flex align-items-center mb-2 " + ` ${props.isUser ? styles.chatUser : ""}`}>
+      <div className={styles.chatAvatar}>
+        <img src={emptyAvatar} />
+      </div>
+      <div className={styles.chatMessage}>
+        Hello this is a message.
+      </div>
     </div>
   )
 }

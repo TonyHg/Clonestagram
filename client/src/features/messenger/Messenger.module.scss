@@ -12,6 +12,12 @@
       .messengerPreview {
         border-radius: 20px;
         padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+          background-image: linear-gradient(to right, #25aae1, #4481eb);
+          color: white;
+        }
 
         .messengerPreviewIcon {
           width: 54px;
@@ -63,5 +69,58 @@
 
   .messengerChat {
 
+    .chatsWrapper {
+      height: 452px;
+      overflow: auto;
+      padding: 4px 15px;
+      .chat {
+        &.chatUser{
+          justify-content: end;
+          flex-direction: row-reverse;
+
+          .chatMessage {
+            background-image: linear-gradient(to right, #25aae1, #4481eb);
+            color:white;
+          }
+        }
+
+        .chatAvatar {
+          width: 32px;
+          height: 32px;
+          border-radius: 100%;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+          cursor: pointer;
+          img {
+            width: 100%;
+            border-radius: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .chatMessage {
+          background: white;
+          margin-left: 10px;
+          margin-right: 10px;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+          border-radius: 15px;
+          padding: 10px;
+        }
+      }
+    }
+
+    .chatInput {
+      background: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+      .chatInputText {
+        width: 600px;
+        margin-right: 10px;
+      }
+
+      svg {
+        cursor: pointer;
+      }
+    }
   }
 }

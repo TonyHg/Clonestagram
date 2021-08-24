@@ -39,7 +39,14 @@ npm start // or yarn start
 * Chat with users
 
 ## Screenshots
-incomming
+
+![Clonestagram](/screenshots/add.png)
+![Clonestagram](/screenshots/auth.png)
+![Clonestagram](/screenshots/details.png)
+![Clonestagram](/screenshots/feed.png)
+![Clonestagram](/screenshots/post.png)
+![Clonestagram](/screenshots/profile.png)
+![Clonestagram](/screenshots/setting.png)
 
 ## Credits
 [Tony Heng](https://github.com/TonyHg)

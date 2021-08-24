@@ -1,0 +1,19 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+.settings {}
+
+.settingsForm {
+  padding: 32px 20%;
+  .settingsFormGroup {
+    margin-bottom: 16px;
+  }
+
+  .settingsActions {
+    .settingsDeleteBtn {
+      cursor: pointer;
+      &.settingsDeleteBtnActive {
+        color: #cc3939;
+      }
+    }
+  }
+}

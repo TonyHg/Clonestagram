@@ -1,0 +1,10 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+@font-face {
+ font-family: "Brand";
+ src: url("../../assets/font/Lemon\ Brownies.ttf") format("truetype")
+}
+
+.brand {
+  font-family: brand;
+}

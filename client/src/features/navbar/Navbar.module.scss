@@ -1,0 +1,36 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+.navbar {
+  height: 70px;
+  width: 100%;
+  padding: 20px 20%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  .navbarName {
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  .navbarActions {
+    .navbarUser {
+      width: 32px;
+      height: 32px;
+      border-radius: 100%;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      img {
+        border-radius: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    div {
+      margin-right: 12px;
+      cursor: pointer;
+    }
+  }
+}
+
+
+

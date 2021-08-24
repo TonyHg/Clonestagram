@@ -1,0 +1,26 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+.auth {
+  padding: 35px 20%;
+  height: 100%;
+  
+  .authBrandName {
+    font-size: xxx-large;
+  }
+
+  .authMethodWrapper {
+    width: 100%;
+    .authLogin {
+      
+    }
+
+    .authDivider {
+      div {
+        border-left: 2px solid #333;
+        width: 1px;
+        height: 100%;
+        margin: auto;
+      }
+    }
+  }
+}

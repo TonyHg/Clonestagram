@@ -39,10 +39,10 @@ npm start // or yarn start
 * Chat with users
 
 ## TODO
-[] Infinite scroll
-[] Websocket
-[] Vercel
-[] Next.js
+- [ ] Infinite scroll
+- [ ] Websocket
+- [ ] Vercel
+- [ ] Next.js
 
 ## Screenshots
 

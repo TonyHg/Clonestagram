@@ -3,7 +3,7 @@ const db = dbUtils.getDb();
 const Post = require("../models/post.model");
 const posts = db.collection("posts");
 
-exports.getAllPost = () => {
+exports.getAllPosts = () => {
   const posts = Post.find().populate("user");
   return posts;
 };

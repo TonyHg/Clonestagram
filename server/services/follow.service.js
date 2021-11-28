@@ -14,12 +14,15 @@ exports.follow = async (userId, followerId) => {
   const o_userId = new ObjectId(userId);
   const o_followerId = new ObjectId(followerId);
 
+  const maybeFollow = await FollowRepository.isFollowing(userId, followerId);
+  if (maybeFollow) return maybeFollow;
+
   const follow = new Follow({
     user: o_userId,
     follower: o_followerId,
   });
 
-  return follow.save();
+  return await follow.save();
 };
 
 exports.unfollow = async (userId, followerId) => {

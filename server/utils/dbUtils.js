@@ -8,7 +8,7 @@ const uri =
 let mongoDB = process.env.MONGODB_URI || uri;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 let gfs;
 db.once("open", () => {

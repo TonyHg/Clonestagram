@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-const BASE_URL = "http://localhost:2048/api/";
+const BASE_URL = "https://clonestagram-back.vercel.app/api/";
 
 export const instance = axios.create({
   baseURL: BASE_URL,

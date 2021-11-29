@@ -38,6 +38,12 @@ npm start // or yarn start
 * Search and follow other users
 * Chat with users
 
+## TODO
+- [ ] Infinite scroll
+- [ ] Websocket
+- [ ] Vercel
+- [ ] Next.js
+
 ## Screenshots
 
 ![Clonestagram](/screenshots/add.png)

@@ -3,9 +3,7 @@ const crypto = require("crypto");
 const { GridFsStorage } = require("multer-gridfs-storage");
 const Grid = require("gridfs-stream");
 const mongoose = require("mongoose");
-const uri =
-  "mongodb+srv://admin:Gh6nM6QhAvAxQYP@cluster0.uz537.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-let mongoDB = process.env.MONGODB_URI || uri;
+let mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;

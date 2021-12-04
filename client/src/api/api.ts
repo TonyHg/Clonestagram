@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
-const BASE_URL = "https://clonestagram-back.vercel.app/api/";
+export const BASE_URL = "https://clonestagram-back.vercel.app/api";
+export const IMG_URL = BASE_URL + "/file/file/"
 
 export const instance = axios.create({
   baseURL: BASE_URL,

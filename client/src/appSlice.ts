@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserRequest } from './api/user.api';
 import emptyAvatar from './assets/img/image 2.png';
+import { IMG_URL } from './api/api';
 
 export const views = {
   LOGIN: "login",
@@ -29,7 +30,7 @@ export const appSlice = createSlice({
     },
 
     setAvatar(state, action: PayloadAction<string>) {
-      state.avatar = 'http://localhost:2048/api/file/file/' + action.payload
+      state.avatar = IMG_URL + '/file/file/' + action.payload
     },
 
     clearAvatar(state) {

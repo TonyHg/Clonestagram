@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faPaperPlane, faComment } from '@fortawesome/free-regular-svg-icons';
 import emptyAvatar from '../../assets/img/image 2.png';
+import { IMG_URL } from '../../api/api';
 
 import styles from './Post.module.scss';
 import { IPostComment, IPostCommentWithUser, IPostUser, IPostWithUser } from '../../models/post.interface';
@@ -25,7 +26,7 @@ export function Post(props: { post: IPostWithUser }) {
       UserRequest.getAvatar(props.post.user._id)
         .then((data) => {
           if (data.status)
-            setAvatar('http://localhost:2048/api/file/file/' + data.message)
+            setAvatar(IMG_URL + data.message)
         })
         .catch((err) => { })
     }
@@ -109,7 +110,7 @@ function PostContent(props: { post: IPostWithUser, avatar: string, onClick: (e: 
           </span>
         </div>
         <div className={styles.postMedia}>
-          <img src={'http://localhost:2048/api/file/file/' + props.post.filename} alt="" />
+          <img src={IMG_URL + props.post.filename} alt="" />
         </div>
         <div className={styles.postDetails + " py-2 px-3"}>
           <div className={"d-flex justify-content-between align-items-center"}>
@@ -195,7 +196,7 @@ function PostComment(props: { comment: IPostCommentWithUser, userId: string, loa
     UserRequest.getAvatar(props.comment.user._id)
       .then((data) => {
         if (data.status)
-          setAvatar('http://localhost:2048/api/file/file/' + data.message)
+          setAvatar(IMG_URL + data.message)
       })
   }, [])
 

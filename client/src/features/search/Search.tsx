@@ -11,6 +11,7 @@ import { UserRequest } from '../../api/user.api';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../profile/profileSlice';
 import { switchView, views } from '../../appSlice';
+import { IMG_URL } from '../../api/api';
 
 export function Search() {
   const [query, setQuery] = useState("")
@@ -64,7 +65,7 @@ function SearchItem(props: { user: IUserPublic, onFocus: () => void, onBlur: () 
     UserRequest.getAvatar(props.user._id)
       .then((data) => {
         if (data.status)
-          setAvatar('http://localhost:2048/api/file/file/' + data.message)
+          setAvatar(IMG_URL + data.message)
       })
   }, [])
 

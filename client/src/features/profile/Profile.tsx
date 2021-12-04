@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserRequest } from '../../api/user.api';
 import { RootState } from '../../app/store';
+import { IMG_URL } from '../../api/api';
 
 import emptyAvatar from '../../assets/img/image 2.png';
 import { IPost } from '../../models/post.interface';
@@ -84,7 +85,7 @@ function UserInfo(props: { user: IUserProfileInfo, profileId: string }) {
 
   useEffect(() => {
     UserRequest.getAvatar(props.profileId).then((data) => {
-      if (data.status) setUserAvatar('http://localhost:2048/api/file/file/' + data.message)
+      if (data.status) setUserAvatar(IMG_URL + data.message)
     })
   }, [onEdit])
 
@@ -211,7 +212,7 @@ function PortfolioItem(props: { post: IPost }) {
           </span>
         </div>
         <div className={styles.portfolioItemMedia}>
-          <img src={'http://localhost:2048/api/file/file/' + props.post.filename} />
+          <img src={IMG_URL + props.post.filename} />
         </div>
         <div className={styles.portfolioItemDescription + " py-1 px-3"}>
           {props.post.description}

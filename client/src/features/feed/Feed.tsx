@@ -6,6 +6,7 @@ import { RootState } from '../../app/store';
 import { IPost, IPostWithUser } from '../../models/post.interface';
 import { IUserPublic } from '../../models/user.interface';
 import emptyAvatar from '../../assets/img/image 2.png';
+import { IMG_URL } from '../../api/api';
 
 import { Post } from '../post/Post';
 
@@ -73,7 +74,7 @@ function UserSuggestion(props: { user: IUserPublic, userId: string, loadPosts: (
       UserRequest.getAvatar(props.user._id)
         .then((data) => {
           if (data.status)
-            setAvatar('http://localhost:2048/api/file/file/' + data.message)
+            setAvatar(IMG_URL + data.message)
         })
         .catch((err) => { })
     }

@@ -30,7 +30,7 @@ export const appSlice = createSlice({
     },
 
     setAvatar(state, action: PayloadAction<string>) {
-      state.avatar = IMG_URL + '/file/file/' + action.payload
+      state.avatar = IMG_URL + action.payload
     },
 
     clearAvatar(state) {

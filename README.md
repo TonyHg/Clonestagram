@@ -1,4 +1,4 @@
-# Clonestagram
+# [Clonestagram](https://clonestagram-front.vercel.app/)
 ![Clonestagram](/overview.png)
 Instagram clone MVP using MERN Full stack approach 
 
@@ -18,6 +18,8 @@ npm install
 ```
 
 ## Usage
+Go to `https://clonestagram-front.vercel.app/`
+
 Server
 ```
 cd server
@@ -41,8 +43,7 @@ npm start // or yarn start
 ## TODO
 - [ ] Infinite scroll
 - [ ] Websocket
-- [ ] Vercel
-- [ ] Next.js
+- [X] Vercel
 
 ## Screenshots
 

@@ -2,6 +2,7 @@ import { Drawer } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { unselect } from './postDrawerSlice';
+import { IMG_URL } from '../../api/api';
 
 import styles from './PostDrawer.module.scss';
 import drawerStyles from '../styles/Drawer.module.scss';
@@ -54,7 +55,7 @@ export function PostDrawer() {
           <div className={styles.postDrawerWrapper + " d-flex"}>
             <div className={styles.postDrawerContent + " col-6"}>
               <div className={styles.postDrawerMedia}>
-                {post.filename && <img src={'http://localhost:2048/api/file/file/' + post.filename} alt="" />}
+                {post.filename && <img src={IMG_URL + post.filename} alt="" />}
               </div>
               <div className={styles.postDrawerDescription}>
                 {post.description}
